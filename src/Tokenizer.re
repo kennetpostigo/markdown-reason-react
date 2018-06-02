@@ -6,14 +6,15 @@ type typ =
 type primitives =
   | Paragraph
   | Blockquote
-  | Heading
+  | Heading(int)
   | Code
   | InlineCode
   | List
-  | ListItem
-  | Table
-  | TableRow
-  | TableCell
+  /*
+   | ListItem
+   | Table
+   | TableRow
+   | TableCell */
   | ThematicBreak
   | Break
   | Emphasis
@@ -21,13 +22,33 @@ type primitives =
   | Delete
   | Link
   | Image
-  | Footnote
-  | LinkReference
-  | ImageReference
-  | FootnoteReference
-  | Definition
-  | FootnoteDefinition
-  | TextNode;
+  | Footnote; /* | LinkReference   | ImageReference   | FootnoteReference   | Definition   | FootnoteDefinition   | TextNode */
+
+let stringToPrimitives = pattern =>
+  switch (pattern) {
+  | ">" => Blockquote
+  | "#" => Heading(1)
+  | "##" => Heading(2)
+  | "###" => Heading(3)
+  | "####" => Heading(4)
+  | "#####" => Heading(5)
+  | "######" => Heading(6)
+  | "```" => Code
+  | "`" => InlineCode
+  | "1." => List
+  | "*" => List
+  | "-" => List
+  | "+" => List
+  | "***" => ThematicBreak
+  | "\n" => Break
+  | "_" => Emphasis
+  | "__" => Strong
+  | "~~" => Delete
+  | "[" => Link
+  | "![" => Image
+  | "^[" => Footnote
+  | _ => failwith("THIS CASE IS NOT HANDLED")
+  };
 
 type location = (int, int);
 
