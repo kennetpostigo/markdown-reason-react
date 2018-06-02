@@ -14,11 +14,11 @@ let () = {
     ++ "OPTIONS";
 
   let speclist = [
-    ("-v", Arg.Set(version), "Show version information"),
+    ("-v", Arg.Set(version), "\n    Show version information\n"),
     (
       "-static",
       Arg.Set(static),
-      "Generate a single page application from the directory ofmarkdown pages",
+      "\n    Generate a single page application from the directory ofmarkdown pages\n",
     ),
   ];
 
@@ -30,7 +30,5 @@ let () = {
 
   version^ ? print_string("0.1.0\n") : ();
 
-  static^ ?
-    MarkdownReasonReact.Tokenizer.parseText("lol") :
-    MarkdownReasonReact.Tokenizer.parseText("lol");
+  static^ ? Tokenizer.parseText("lol") : Tokenizer.parseText("lol");
 };

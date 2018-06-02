@@ -31,7 +31,7 @@ generate a SPA.
 
 
 SYNOPSIS
-       markdown-to-reason-react [OPTION]... [DIRECTORY]...
+       markdown-to-reason-react [OPTION]... DIRECTORY
 
 DESCRIPTION
        markdown-to-reason-react takes a directory of markdown files
