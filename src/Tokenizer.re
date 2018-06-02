@@ -58,19 +58,13 @@ type element = {
   location,
 };
 
-let read_file = filename => {
-  let lines = ref([]);
+let readFileLineByLine = (filename, fn) => {
   let chan = open_in(filename);
   try (
-    {
-      while (true) {
-        lines := [input_line(chan), ...lines^];
-      };
-      lines^;
+    while (true) {
+      fn(input_line(chan));
     }
   ) {
-  | End_of_file =>
-    close_in(chan);
-    List.rev(lines^);
+  | End_of_file => close_in(chan)
   };
 };
