@@ -34,6 +34,35 @@
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@esy-ocaml/substs/-/substs-0.0.1.tgz#59ebdbbaedcda123fc7ed8fb2b302b7d819e9a46"
 
+"@opam/alcotest@*":
+  version "0.8.3"
+  uid "6d2f9af5be3d326719aa80127bd47bb7"
+  resolved "@opam/alcotest@0.8.3-6d2f9af5be3d326719aa80127bd47bb7.tgz"
+  dependencies:
+    "@esy-ocaml/esy-installer" "^0.0.0"
+    "@esy-ocaml/substs" "^0.0.1"
+    "@opam/astring" "*"
+    "@opam/cmdliner" "*"
+    "@opam/fmt" " >= 0.8.0"
+    "@opam/jbuilder" " >= 1.0.0-beta10"
+    "@opam/result" "*"
+  peerDependencies:
+    ocaml " >= 4.2.3000"
+
+"@opam/astring@*":
+  version "0.8.3"
+  uid b9d2587455c47bba6216ed0af6785be3
+  resolved "@opam/astring@0.8.3-b9d2587455c47bba6216ed0af6785be3.tgz"
+  dependencies:
+    "@esy-ocaml/esy-installer" "^0.0.0"
+    "@esy-ocaml/substs" "^0.0.1"
+    "@opam/base-bytes" "*"
+    "@opam/ocamlbuild" "*"
+    "@opam/ocamlfind" "*"
+    "@opam/topkg" "*"
+  peerDependencies:
+    ocaml " >= 4.1.0"
+
 "@opam/base-bytes@*":
   version "0.0.0-base"
   uid bacd2a20f40952db4c545687d27548ab
@@ -101,6 +130,20 @@
   peerDependencies:
     ocaml " >= 4.2.3000"
 
+"@opam/cmdliner@*":
+  version "1.0.2"
+  uid "4b1c61475a9d1d2451b622ad0f3e58d2"
+  resolved "@opam/cmdliner@1.0.2-4b1c61475a9d1d2451b622ad0f3e58d2.tgz"
+  dependencies:
+    "@esy-ocaml/esy-installer" "^0.0.0"
+    "@esy-ocaml/substs" "^0.0.1"
+    "@opam/ocamlbuild" "*"
+    "@opam/ocamlfind" "*"
+    "@opam/result" "*"
+    "@opam/topkg" "*"
+  peerDependencies:
+    ocaml " >= 4.1.0"
+
 "@opam/conf-m4@*":
   version "1.0.0"
   uid "97f0966b2e2652d02c0d9125781c31df"
@@ -144,6 +187,21 @@
     "@opam/jbuilder" "*"
   peerDependencies:
     ocaml " >= 4.2.3000"
+
+"@opam/fmt@ >= 0.8.0":
+  version "0.8.5"
+  uid "5c1870ebd5137354d253a3abbaf020f0"
+  resolved "@opam/fmt@0.8.5-5c1870ebd5137354d253a3abbaf020f0.tgz"
+  dependencies:
+    "@esy-ocaml/esy-installer" "^0.0.0"
+    "@esy-ocaml/substs" "^0.0.1"
+    "@opam/ocamlbuild" "*"
+    "@opam/ocamlfind" "*"
+    "@opam/result" "*"
+    "@opam/topkg" " >= 0.9.0"
+    "@opam/uchar" "*"
+  peerDependencies:
+    ocaml " >= 4.1.0"
 
 "@opam/jbuilder@ >= 1.0.0-beta10", "@opam/jbuilder@ >= 1.0.0-beta11", "@opam/jbuilder@ >= 1.0.0-beta14", "@opam/jbuilder@ >= 1.0.0-beta17", "@opam/jbuilder@ >= 1.0.0-beta181", "@opam/jbuilder@ >= 1.0.0-beta7", "@opam/jbuilder@ >= 1.0.0-beta9", "@opam/jbuilder@*", "@opam/jbuilder@^1.0.0-beta14":
   version "1.0.0-beta20"
@@ -347,7 +405,7 @@
   peerDependencies:
     ocaml "*"
 
-"@opam/topkg@ >= 0.9.0":
+"@opam/topkg@ >= 0.9.0", "@opam/topkg@*":
   version "0.9.1"
   uid "516192416bf683eb7edf2dbd649d014d"
   resolved "@opam/topkg@0.9.1-516192416bf683eb7edf2dbd649d014d.tgz"
@@ -359,6 +417,17 @@
     "@opam/result" "*"
   peerDependencies:
     ocaml " >= 4.1.0"
+
+"@opam/uchar@*":
+  version "0.0.2"
+  uid "234806fdd6b50b459a41e955c67d875d"
+  resolved "@opam/uchar@0.0.2-234806fdd6b50b459a41e955c67d875d.tgz"
+  dependencies:
+    "@esy-ocaml/esy-installer" "^0.0.0"
+    "@esy-ocaml/substs" "^0.0.1"
+    "@opam/ocamlbuild" "*"
+  peerDependencies:
+    ocaml " >= 3.12.0"
 
 "@opam/utop@ >= 1.17.0":
   version "2.1.0"
