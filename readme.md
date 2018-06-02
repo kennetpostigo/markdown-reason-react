@@ -26,7 +26,7 @@ generate a SPA.
 * [ ] Codegen ReasonReact Pages
 
 ```
-                                 MARKDOWN-TO-REREACT
+                                 MARKDOWN-TO-REASON-REACT
 
 
 
