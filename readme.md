@@ -18,7 +18,7 @@ generate a SPA.
 
 ## TODO:
 
-* [x] Parse Markdown
+* [ ] Parse Markdown
 * [ ] Parse HTML in Markdown
 * [ ] Parse YAML in Markdown
 * [ ] Support Components in Markdown
