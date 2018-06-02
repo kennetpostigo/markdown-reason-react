@@ -31,14 +31,14 @@ generate a SPA.
 
 
 NAME
-       md-to-rereact - Reason's Parser & Pretty-printer
+       markdown-to-reason-react - Reason's Parser & Pretty-printer
 
 SYNOPSIS
-       md-to-rereact [OPTION]... [DIRECTORY]...
+       markdown-to-reason-react [OPTION]... [DIRECTORY]...
 
 DESCRIPTION
-       md-to-rereact takes a directory of markdown files and returns
-       a directory of reason-react pages
+       markdown-to-reason-react takes a directory of markdown files
+       and returns a directory of reason-react pages
 
 ARGUMENTS
        DIRECTORY
