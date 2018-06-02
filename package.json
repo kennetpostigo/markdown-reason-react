@@ -1,0 +1,28 @@
+{
+  "name": "markdown-reason-react",
+  "version": "0.0.0",
+  "description": "markdown to reason react pages",
+  "license": "MIT",
+  "esy": {
+    "build": [["refmterr", "jbuilder", "build"]],
+    "install": ["esy-installer"],
+    "buildsInSource": "_build"
+  },
+  "dependencies": {
+    "@esy-ocaml/esy-installer": "^0.0.0",
+    "@opam/jbuilder": "^1.0.0-beta14",
+    "@esy-ocaml/reason": "^3.2.0",
+    "refmterr": "^3.1.7"
+  },
+  "resolutions": {
+    "**/@opam/reason":
+      "facebook/reason#b622e8f40c5605e9ab2b2423eb78053b8690d14e"
+  },
+  "peerDependencies": {
+    "ocaml": "~4.6.0"
+  },
+  "devDependencies": {
+    "@esy-ocaml/merlin": "*",
+    "ocaml": "~4.6.0"
+  }
+}
