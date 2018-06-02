@@ -58,6 +58,10 @@ type element = {
   location,
 };
 
+let getDirectoryFiles = directory => "TODO";
+
+let iterDirectoryFiles = fn => "TODO";
+
 let readFileLineByLine = (filename, fn) => {
   let chan = open_in(filename);
   try (
@@ -68,3 +72,4 @@ let readFileLineByLine = (filename, fn) => {
   | End_of_file => close_in(chan)
   };
 };
+let parseText = line => ();

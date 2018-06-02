@@ -30,9 +30,6 @@ generate a SPA.
 
 
 
-NAME
-       markdown-to-reason-react - Reason's Parser & Pretty-printer
-
 SYNOPSIS
        markdown-to-reason-react [OPTION]... [DIRECTORY]...
 
