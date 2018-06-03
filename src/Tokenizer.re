@@ -3,21 +3,22 @@ type listTypes =
   | Unordered;
 
 type primitives =
-  | Paragraph
-  | Blockquote
   | Heading(int)
-  | Code
-  | InlineCode
-  | List(listTypes)
-  | ListItem
-  | Table
-  | TableRow
-  | TableCell
-  | ThematicBreak
+  | Blockquote
+  | Paragraph
+  | TextNode
   | Break
   | Emphasis
   | Strong
   | Delete
+  | List(listTypes)
+  | ListItem
+  | Code
+  | InlineCode
+  | Table
+  | TableRow
+  | TableCell
+  | ThematicBreak
   | Link
   | Image
   | Footnote
@@ -26,6 +27,21 @@ type primitives =
   | FootnoteReference
   | Definition
   | FootnoteDefinition;
+
+type location = (int, int);
+
+type element = {
+  element: primitives,
+  children,
+  location,
+}
+and children =
+  | Child(element)
+  | Children(array(element))
+  | String(string)
+  | None;
+
+type ast = array(element);
 
 let primitivesToString = line =>
   switch (line) {
@@ -53,6 +69,7 @@ let primitivesToString = line =>
   | FootnoteReference => "FootnoteReference"
   | Definition => "Definition"
   | FootnoteDefinition => "FootnoteDefinition"
+  | TextNode => "TextNode"
   };
 
 let classifyHeading = line =>
@@ -97,7 +114,7 @@ let classifyList = line =>
     }
   };
 
-let stringToPrimitives = line =>
+let stringToPrimitive = line =>
   switch (String.sub(line, 0, 1)) {
   | "" => Break
   | ">" => Blockquote
@@ -127,29 +144,117 @@ let stringToPrimitives = line =>
   | _ => Paragraph
   };
 
-type location = (int, int);
-
-type element = {
-  element: primitives,
-  children: list(element),
-  location,
-};
-
 let getDirectoryFiles = directory => "TODO";
 
 let iterDirectoryFiles = fn => "TODO";
 
-let readFileLineByLine = (filename, fn) => {
-  let line = ref(1);
+let makeTextNode = (s, location) =>
+  Child({element: TextNode, children: String(s), location});
+
+let rec parseMultilineElements =
+        (prmtv, chan, accumulatedStr, lineStart, lineEnd) => {
+  let next = input_line(chan);
+  if (next == (prmtv == Code ? "```" : "")) {
+    (
+      [|
+        {
+          element: prmtv,
+          children: makeTextNode(accumulatedStr, (lineStart, lineEnd)),
+          location: (lineStart, lineEnd),
+        },
+      |],
+      lineEnd + 1,
+    );
+  } else {
+    let nextStr = accumulatedStr ++ next;
+    parseMultilineElements(prmtv, chan, nextStr, lineStart, lineEnd + 1);
+  };
+};
+
+let rec parseLists = (chan, accumulatedList, listType, lineStart, lineEnd) => {
+  let next = input_line(chan);
+  if (next == "") {
+    (
+      [|
+        {
+          element: List(listType),
+          children: Children(accumulatedList),
+          location: (lineStart, lineEnd),
+        },
+      |],
+      lineEnd + 1,
+    );
+  } else {
+    let nextList =
+      Array.append(
+        accumulatedList,
+        [|
+          {
+            element: ListItem,
+            children:
+              Child({
+                element: TextNode,
+                children: String(next),
+                location: (lineEnd, lineEnd),
+              }),
+            location: (lineEnd, lineEnd),
+          },
+        |],
+      );
+    parseLists(chan, nextList, listType, lineStart, lineEnd + 1);
+  };
+};
+
+let parseFileToAST = filename => {
+  let ast: ref(ast) = ref([||]);
+  let startLocation = ref(1);
   let chan = open_in(filename);
+
   try (
     while (true) {
-      fn(input_line(chan), string_of_int(line^));
-      line := line^ + 1;
+      /* fn(input_line(chan), string_of_int(startLocation^)); */
+      let line = input_line(chan);
+      let primitive = stringToPrimitive(line);
+
+      switch (primitive) {
+      | Paragraph
+      | Blockquote
+      | Code =>
+        let (el, finalLocation) =
+          parseMultilineElements(
+            primitive,
+            chan,
+            line,
+            startLocation^,
+            startLocation^,
+          );
+        ast := Array.append(ast^, el);
+        startLocation := finalLocation;
+      | List(lt) =>
+        let (el, finalLocation) =
+          parseLists(chan, [||], lt, startLocation^, startLocation^);
+        ast := Array.append(ast^, el);
+        startLocation := finalLocation;
+      | _ =>
+        ast :=
+          Array.append(
+            ast^,
+            [|
+              {
+                element: primitive,
+                children:
+                  makeTextNode(line, (startLocation^, startLocation^)),
+                location: (startLocation^, startLocation^),
+              },
+            |],
+          );
+        startLocation := startLocation^ + 1;
+      };
     }
   ) {
   | End_of_file => close_in(chan)
   };
+  ast^;
 };
 
 let parseText = line => ();
