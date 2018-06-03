@@ -6,9 +6,9 @@
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/@esy-ocaml/esy-installer/-/esy-installer-0.0.0.tgz#6b0e2bd4ee43531ac74793fe55cfcc3aca197a66"
 
-"@esy-ocaml/merlin@*":
-  version "3.0.5004"
-  resolved "https://registry.yarnpkg.com/@esy-ocaml/merlin/-/merlin-3.0.5004.tgz#e92a1cb8448b230874837dcf7da29def41f46170"
+"@esy-ocaml/merlin@3.0.5":
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/@esy-ocaml/merlin/-/merlin-3.0.5.tgz#f1459f159f56fb0dd73e64b77ed432b1d3d15bd7"
   dependencies:
     "@esy-ocaml/esy-installer" "^0.0.0"
     "@esy-ocaml/substs" "^0.0.1"
@@ -34,7 +34,21 @@
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@esy-ocaml/substs/-/substs-0.0.1.tgz#59ebdbbaedcda123fc7ed8fb2b302b7d819e9a46"
 
-"@opam/alcotest@*":
+"@opam/alcotest-lwt@0.8.0":
+  version "0.8.0"
+  uid "696c7ac6f54a44ae18ac2f3eff19661b"
+  resolved "@opam/alcotest-lwt@0.8.0-696c7ac6f54a44ae18ac2f3eff19661b.tgz"
+  dependencies:
+    "@esy-ocaml/esy-installer" "^0.0.0"
+    "@esy-ocaml/substs" "^0.0.1"
+    "@opam/alcotest" " >= 0.8.0"
+    "@opam/jbuilder" " >= 1.0.0-beta10"
+    "@opam/logs" "*"
+    "@opam/lwt" "*"
+  peerDependencies:
+    ocaml " >= 4.2.3000"
+
+"@opam/alcotest@ >= 0.8.0", "@opam/alcotest@^0.8.3":
   version "0.8.3"
   uid "6d2f9af5be3d326719aa80127bd47bb7"
   resolved "@opam/alcotest@0.8.3-6d2f9af5be3d326719aa80127bd47bb7.tgz"
@@ -74,16 +88,6 @@
   peerDependencies:
     ocaml " >= 4.2.0"
 
-"@opam/base-threads@*":
-  version "0.0.0-base"
-  uid "5601b815938b487242834ca2ddd7e3fc"
-  resolved "@opam/base-threads@0.0.0-base-5601b815938b487242834ca2ddd7e3fc.tgz"
-  dependencies:
-    "@esy-ocaml/esy-installer" "^0.0.0"
-    "@esy-ocaml/substs" "^0.0.1"
-  peerDependencies:
-    ocaml "*"
-
 "@opam/base-unix@*":
   version "0.0.0-base"
   uid "04bc004c59f2edca849d38ea6891bb7f"
@@ -104,29 +108,6 @@
     "@opam/conf-which" "*"
     "@opam/easy-format" "*"
     "@opam/jbuilder" " >= 1.0.0-beta7"
-  peerDependencies:
-    ocaml " >= 4.2.3000"
-
-"@opam/camlp4@*":
-  version "4.6.0-1"
-  uid ec9e71b1e73d101ab8ef9a66cc9035e7
-  resolved "@opam/camlp4@4.6.0-1-ec9e71b1e73d101ab8ef9a66cc9035e7.tgz"
-  dependencies:
-    "@esy-ocaml/esy-installer" "^0.0.0"
-    "@esy-ocaml/substs" "^0.0.1"
-    "@opam/ocamlbuild" "*"
-  peerDependencies:
-    ocaml " >= 4.6.0  < 4.7.0"
-
-"@opam/camomile@ >= 0.8.0", "@opam/camomile@ >= 0.8.6", "@opam/camomile@*":
-  version "1.0.1"
-  uid f4d58fb782e0362b7848320ac26890de
-  resolved "@opam/camomile@1.0.1-f4d58fb782e0362b7848320ac26890de.tgz"
-  dependencies:
-    "@esy-ocaml/esy-installer" "^0.0.0"
-    "@esy-ocaml/substs" "^0.0.1"
-    "@opam/camlp4" "*"
-    "@opam/jbuilder" " >= 1.0.0-beta17"
   peerDependencies:
     ocaml " >= 4.2.3000"
 
@@ -164,7 +145,7 @@
   peerDependencies:
     ocaml "*"
 
-"@opam/cppo@ >= 1.1.0", "@opam/cppo@ >= 1.1.2", "@opam/cppo@*":
+"@opam/cppo@ >= 1.1.0", "@opam/cppo@*":
   version "1.6.4"
   uid "0caf37d16727e17fbcd4e9b41a467f91"
   resolved "@opam/cppo@1.6.4-0caf37d16727e17fbcd4e9b41a467f91.tgz"
@@ -203,7 +184,7 @@
   peerDependencies:
     ocaml " >= 4.1.0"
 
-"@opam/jbuilder@ >= 1.0.0-beta10", "@opam/jbuilder@ >= 1.0.0-beta11", "@opam/jbuilder@ >= 1.0.0-beta14", "@opam/jbuilder@ >= 1.0.0-beta17", "@opam/jbuilder@ >= 1.0.0-beta181", "@opam/jbuilder@ >= 1.0.0-beta7", "@opam/jbuilder@ >= 1.0.0-beta9", "@opam/jbuilder@*", "@opam/jbuilder@^1.0.0-beta14":
+"@opam/jbuilder@ >= 1.0.0-beta10", "@opam/jbuilder@ >= 1.0.0-beta11", "@opam/jbuilder@ >= 1.0.0-beta14", "@opam/jbuilder@ >= 1.0.0-beta17", "@opam/jbuilder@ >= 1.0.0-beta181", "@opam/jbuilder@ >= 1.0.0-beta7", "@opam/jbuilder@*", "@opam/jbuilder@^1.0.0-beta20":
   version "1.0.0-beta20"
   uid "1648206284a54407f6eee01ed950fff7"
   resolved "@opam/jbuilder@1.0.0-beta20-1648206284a54407f6eee01ed950fff7.tgz"
@@ -214,39 +195,21 @@
   peerDependencies:
     ocaml " >= 4.2.3000"
 
-"@opam/lambda-term@ >= 1.2.0":
-  version "1.12.0"
-  uid "318456db287041f877e89e7098a12312"
-  resolved "@opam/lambda-term@1.12.0-318456db287041f877e89e7098a12312.tgz"
+"@opam/logs@*":
+  version "0.6.2"
+  uid b3644eee19217825f652f61a658ca61e
+  resolved "@opam/logs@0.6.2-b3644eee19217825f652f61a658ca61e.tgz"
   dependencies:
     "@esy-ocaml/esy-installer" "^0.0.0"
     "@esy-ocaml/substs" "^0.0.1"
-    "@opam/camomile" " >= 0.8.6"
-    "@opam/jbuilder" " >= 1.0.0-beta9"
-    "@opam/lwt" " >= 2.7.0  < 4.0.0"
-    "@opam/lwt_react" "*"
-    "@opam/react" "*"
-    "@opam/zed" " >= 1.2.0"
-  peerDependencies:
-    ocaml " >= 4.2.3000"
-
-"@opam/lwt@ >= 2.7.0  < 4.0.0":
-  version "3.3.0"
-  uid d6527433462fadf2f1b8168dbb5cf10e
-  resolved "@opam/lwt@3.3.0-d6527433462fadf2f1b8168dbb5cf10e.tgz"
-  dependencies:
-    "@esy-ocaml/esy-installer" "^0.0.0"
-    "@esy-ocaml/substs" "^0.0.1"
-    "@opam/cppo" " >= 1.1.0"
-    "@opam/jbuilder" " >= 1.0.0-beta14"
-    "@opam/ocaml-migrate-parsetree" "*"
-    "@opam/ocamlfind" " >= 1.7.3--1"
-    "@opam/ppx_tools_versioned" " >= 5.0.1"
+    "@opam/ocamlbuild" "*"
+    "@opam/ocamlfind" "*"
     "@opam/result" "*"
+    "@opam/topkg" "*"
   peerDependencies:
-    ocaml " >= 4.2.0"
+    ocaml " >= 4.1.0"
 
-"@opam/lwt@ >= 3.0.0", "@opam/lwt@*":
+"@opam/lwt@*":
   version "4.0.1"
   uid "500e177eb31e84ddfe24ee6b64bd0c64"
   resolved "@opam/lwt@4.0.1-500e177eb31e84ddfe24ee6b64bd0c64.tgz"
@@ -259,19 +222,6 @@
     "@opam/result" "*"
   peerDependencies:
     ocaml " >= 4.2.0"
-
-"@opam/lwt_react@*":
-  version "1.1.1"
-  uid aa9053f8fd0e2684a474b8dbcc0a30d6
-  resolved "@opam/lwt_react@1.1.1-aa9053f8fd0e2684a474b8dbcc0a30d6.tgz"
-  dependencies:
-    "@esy-ocaml/esy-installer" "^0.0.0"
-    "@esy-ocaml/substs" "^0.0.1"
-    "@opam/jbuilder" " >= 1.0.0-beta14"
-    "@opam/lwt" " >= 3.0.0"
-    "@opam/react" " >= 1.0.0"
-  peerDependencies:
-    ocaml "*"
 
 "@opam/menhir@ >= 20170418.0.0  <= 20171013.0.0":
   version "20171013.0.0"
@@ -297,7 +247,7 @@
   peerDependencies:
     ocaml " >= 4.2.3000"
 
-"@opam/ocaml-migrate-parsetree@ >= 1.0.7", "@opam/ocaml-migrate-parsetree@*":
+"@opam/ocaml-migrate-parsetree@*":
   version "1.0.10"
   uid "48723a85ec73e8dc29f6f8710d1178a4"
   resolved "@opam/ocaml-migrate-parsetree@1.0.10-48723a85ec73e8dc29f6f8710d1178a4.tgz"
@@ -320,7 +270,7 @@
   peerDependencies:
     ocaml " >= 4.3.0"
 
-"@opam/ocamlfind@", "@opam/ocamlfind@ >= 1.5.0", "@opam/ocamlfind@ >= 1.5.2", "@opam/ocamlfind@ >= 1.5.3", "@opam/ocamlfind@ >= 1.6.1", "@opam/ocamlfind@ >= 1.7.2", "@opam/ocamlfind@ >= 1.7.3--1", "@opam/ocamlfind@*":
+"@opam/ocamlfind@", "@opam/ocamlfind@ >= 1.5.2", "@opam/ocamlfind@ >= 1.5.3", "@opam/ocamlfind@ >= 1.6.1", "@opam/ocamlfind@ >= 1.7.3--1", "@opam/ocamlfind@*":
   version "1.8.0"
   uid "525500c3041431ef23d0f7d1895c8b9a"
   resolved "@opam/ocamlfind@1.8.0-525500c3041431ef23d0f7d1895c8b9a.tgz"
@@ -330,18 +280,6 @@
     "@opam/conf-m4" "*"
   peerDependencies:
     ocaml " >= 4.0.0"
-
-"@opam/ppx_tools_versioned@ >= 5.0.1":
-  version "5.1.0"
-  uid "563cec821710613b61de9bf99ebebe65"
-  resolved "@opam/ppx_tools_versioned@5.1.0-563cec821710613b61de9bf99ebebe65.tgz"
-  dependencies:
-    "@esy-ocaml/esy-installer" "^0.0.0"
-    "@esy-ocaml/substs" "^0.0.1"
-    "@opam/ocaml-migrate-parsetree" " >= 1.0.7"
-    "@opam/ocamlfind" " >= 1.5.0"
-  peerDependencies:
-    ocaml " >= 4.2.0"
 
 "@opam/re@*":
   version "1.7.3"
@@ -354,36 +292,6 @@
   peerDependencies:
     ocaml " >= 4.2.3000"
 
-"@opam/react@ >= 1.0.0", "@opam/react@*":
-  version "1.2.1"
-  uid "719921829ec3b46cecefeeaefcb6cb61"
-  resolved "@opam/react@1.2.1-719921829ec3b46cecefeeaefcb6cb61.tgz"
-  dependencies:
-    "@esy-ocaml/esy-installer" "^0.0.0"
-    "@esy-ocaml/substs" "^0.0.1"
-    "@opam/ocamlbuild" "*"
-    "@opam/ocamlfind" "*"
-    "@opam/topkg" " >= 0.9.0"
-  peerDependencies:
-    ocaml " >= 4.1.0"
-
-"@opam/reason@facebook/reason#b622e8f40c5605e9ab2b2423eb78053b8690d14e":
-  version "3.0.4"
-  resolved "https://codeload.github.com/facebook/reason/tar.gz/b622e8f40c5605e9ab2b2423eb78053b8690d14e"
-  dependencies:
-    "@esy-ocaml/esy-installer" "^0.0.0"
-    "@esy-ocaml/substs" "^0.0.1"
-    "@opam/jbuilder" "*"
-    "@opam/menhir" " >= 20170418.0.0  <= 20171013.0.0"
-    "@opam/merlin-extend" " >= 0.3.0"
-    "@opam/ocaml-migrate-parsetree" "*"
-    "@opam/ocamlbuild" "*"
-    "@opam/ocamlfind" ""
-    "@opam/result" "=1.2.0"
-    "@opam/utop" " >= 1.17.0"
-  peerDependencies:
-    ocaml " >= 4.2.0  < 4.7.0"
-
 "@opam/result@*":
   version "1.3.0"
   uid "9a01d033485a02ccc143441a46adeb53"
@@ -392,16 +300,6 @@
     "@esy-ocaml/esy-installer" "^0.0.0"
     "@esy-ocaml/substs" "^0.0.1"
     "@opam/jbuilder" " >= 1.0.0-beta11"
-  peerDependencies:
-    ocaml "*"
-
-"@opam/result@=1.2.0":
-  version "1.2.0"
-  uid "5c62071e67f4a84e28ceeaac2969d1ae"
-  resolved "@opam/result@1.2.0-5c62071e67f4a84e28ceeaac2969d1ae.tgz"
-  dependencies:
-    "@esy-ocaml/esy-installer" "^0.0.0"
-    "@esy-ocaml/substs" "^0.0.1"
   peerDependencies:
     ocaml "*"
 
@@ -429,26 +327,6 @@
   peerDependencies:
     ocaml " >= 3.12.0"
 
-"@opam/utop@ >= 1.17.0":
-  version "2.1.0"
-  uid "52ddf36354cf7530843a68ffd29ed6ac"
-  resolved "@opam/utop@2.1.0-52ddf36354cf7530843a68ffd29ed6ac.tgz"
-  dependencies:
-    "@esy-ocaml/esy-installer" "^0.0.0"
-    "@esy-ocaml/substs" "^0.0.1"
-    "@opam/base-threads" "*"
-    "@opam/base-unix" "*"
-    "@opam/camomile" "*"
-    "@opam/cppo" " >= 1.1.2"
-    "@opam/jbuilder" " >= 1.0.0-beta9"
-    "@opam/lambda-term" " >= 1.2.0"
-    "@opam/lwt" "*"
-    "@opam/lwt_react" "*"
-    "@opam/ocamlfind" " >= 1.7.2"
-    "@opam/react" " >= 1.0.0"
-  peerDependencies:
-    ocaml " >= 4.2.3000"
-
 "@opam/yojson@*":
   version "1.4.1"
   uid "1d23ddc5148ccb2ca2e11f0a854d35dd"
@@ -463,21 +341,7 @@
   peerDependencies:
     ocaml " >= 4.2.3000"
 
-"@opam/zed@ >= 1.2.0":
-  version "1.6.0"
-  uid "9a4c3157c2db719927f9648234487c6d"
-  resolved "@opam/zed@1.6.0-9a4c3157c2db719927f9648234487c6d.tgz"
-  dependencies:
-    "@esy-ocaml/esy-installer" "^0.0.0"
-    "@esy-ocaml/substs" "^0.0.1"
-    "@opam/base-bytes" "*"
-    "@opam/camomile" " >= 0.8.0"
-    "@opam/jbuilder" " >= 1.0.0-beta9"
-    "@opam/react" "*"
-  peerDependencies:
-    ocaml " >= 4.2.3000"
-
-ocaml@~4.6.0:
+ocaml@~4.6.1:
   version "4.6.1"
   resolved "https://registry.yarnpkg.com/ocaml/-/ocaml-4.6.1.tgz#8babea2c41a9f734313b4fc1841ec0963c9d7a07"
 

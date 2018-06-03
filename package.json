@@ -11,19 +11,19 @@
   "dependencies": {
     "@esy-ocaml/esy-installer": "^0.0.0",
     "@esy-ocaml/reason": "^3.2.0",
-    "@opam/alcotest": "*",
-    "@opam/jbuilder": "^1.0.0-beta14",
+    "@opam/alcotest": "^0.8.3",
+    "@opam/alcotest-lwt": "0.8.0",
+    "@opam/jbuilder": "^1.0.0-beta20",
     "refmterr": "^3.1.7"
   },
   "resolutions": {
-    "**/@opam/reason":
-      "facebook/reason#b622e8f40c5605e9ab2b2423eb78053b8690d14e"
+    "@esy-ocaml/reason": "^3.2.0"
   },
   "peerDependencies": {
-    "ocaml": "~4.6.0"
+    "ocaml": "~4.6.1"
   },
   "devDependencies": {
-    "@esy-ocaml/merlin": "*",
-    "ocaml": "~4.6.0"
+    "@esy-ocaml/merlin": "3.0.5",
+    "ocaml": "~4.6.1"
   }
 }
