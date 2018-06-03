@@ -8,4 +8,4 @@ let makeComponent = elements =>
 
 /* Codegen */
 
-let generateCodeFromAST = ast => "TODO";
+let generateCodeFromAST = ast => ();

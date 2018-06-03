@@ -30,5 +30,7 @@ let () = {
 
   version^ ? print_string("0.1.0\n") : ();
 
-  static^ ? Tokenizer.parseText("lol") : Tokenizer.parseText("lol");
+  static^ ?
+    Codegen.generateCodeFromAST(Tokenizer.parseFileToAST("")) :
+    Codegen.generateCodeFromAST(Tokenizer.parseFileToAST("lol"));
 };

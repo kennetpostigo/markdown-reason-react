@@ -37,11 +37,11 @@ type element = {
 }
 and children =
   | Child(element)
-  | Children(array(element))
+  | Children(list(element))
   | String(string)
   | None;
 
-type ast = array(element);
+type ast = list(element);
 
 let primitivesToString = line =>
   switch (line) {
@@ -155,13 +155,11 @@ let rec parseMultilineElements =
   let next = input_line(chan);
   if (next == (prmtv == Code ? "```" : "")) {
     (
-      [|
-        {
-          element: prmtv,
-          children: makeTextNode(accumulatedStr, (lineStart, lineEnd)),
-          location: (lineStart, lineEnd),
-        },
-      |],
+      {
+        element: prmtv,
+        children: makeTextNode(accumulatedStr, (lineStart, lineEnd)),
+        location: (lineStart, lineEnd),
+      },
       lineEnd + 1,
     );
   } else {
@@ -174,38 +172,33 @@ let rec parseLists = (chan, accumulatedList, listType, lineStart, lineEnd) => {
   let next = input_line(chan);
   if (next == "") {
     (
-      [|
-        {
-          element: List(listType),
-          children: Children(accumulatedList),
-          location: (lineStart, lineEnd),
-        },
-      |],
+      {
+        element: List(listType),
+        children: Children(accumulatedList),
+        location: (lineStart, lineEnd),
+      },
       lineEnd + 1,
     );
   } else {
-    let nextList =
-      Array.append(
-        accumulatedList,
-        [|
-          {
-            element: ListItem,
-            children:
-              Child({
-                element: TextNode,
-                children: String(next),
-                location: (lineEnd, lineEnd),
-              }),
+    let nextList = [
+      {
+        element: ListItem,
+        children:
+          Child({
+            element: TextNode,
+            children: String(next),
             location: (lineEnd, lineEnd),
-          },
-        |],
-      );
+          }),
+        location: (lineEnd, lineEnd),
+      },
+      ...accumulatedList,
+    ];
     parseLists(chan, nextList, listType, lineStart, lineEnd + 1);
   };
 };
 
 let parseFileToAST = filename => {
-  let ast: ref(ast) = ref([||]);
+  let ast: ref(ast) = ref([]);
   let startLocation = ref(1);
   let chan = open_in(filename);
 
@@ -226,26 +219,23 @@ let parseFileToAST = filename => {
             startLocation^,
             startLocation^,
           );
-        ast := Array.append(ast^, el);
+        ast := [el, ...ast^];
         startLocation := finalLocation;
       | List(lt) =>
         let (el, finalLocation) =
-          parseLists(chan, [||], lt, startLocation^, startLocation^);
-        ast := Array.append(ast^, el);
+          parseLists(chan, [], lt, startLocation^, startLocation^);
+        ast := [el, ...ast^];
         startLocation := finalLocation;
       | _ =>
         ast :=
-          Array.append(
-            ast^,
-            [|
-              {
-                element: primitive,
-                children:
-                  makeTextNode(line, (startLocation^, startLocation^)),
-                location: (startLocation^, startLocation^),
-              },
-            |],
-          );
+          [
+            {
+              element: primitive,
+              children: makeTextNode(line, (startLocation^, startLocation^)),
+              location: (startLocation^, startLocation^),
+            },
+            ...ast^,
+          ];
         startLocation := startLocation^ + 1;
       };
     }
@@ -255,4 +245,4 @@ let parseFileToAST = filename => {
   ast^;
 };
 
-let parseText = line => ();
+let rec astToString = (string, ast) => {/* if () */};
