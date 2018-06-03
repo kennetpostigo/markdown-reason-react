@@ -120,7 +120,6 @@ let stringToPrimitive = line =>
   | ">" => Blockquote
   | "#" => classifyHeading(line)
   | "`" => classifyCode(line)
-  /* | "`" => InlineCode */
   | "1"
   | "2"
   | "3"
