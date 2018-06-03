@@ -211,7 +211,6 @@ let parseFileToAST = filename => {
 
   try (
     while (true) {
-      /* fn(input_line(chan), string_of_int(startLocation^)); */
       let line = input_line(chan);
       let primitive = stringToPrimitive(line);
 
