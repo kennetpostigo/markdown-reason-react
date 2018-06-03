@@ -25,7 +25,7 @@ generate a SPA.
 * [ ] Generate AST
 * [ ] Codegen ReasonReact Pages
 
-```
+```shell
                                  MARKDOWN-TO-REASON-REACT
 
 
