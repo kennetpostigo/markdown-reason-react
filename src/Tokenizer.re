@@ -86,7 +86,7 @@ let classifyList = line =>
     try (
       {
         let _x = int_of_string(String.sub(line, 0, 1));
-        if (String.sub(line, 1, 2) === ".") {
+        if (String.sub(line, 1, 1) == ".") {
           List(Ordered);
         } else {
           Paragraph;
@@ -105,6 +105,14 @@ let stringToPrimitives = line =>
   | "`" => classifyCode(line)
   /* | "`" => InlineCode */
   | "1"
+  | "2"
+  | "3"
+  | "4"
+  | "5"
+  | "6"
+  | "7"
+  | "8"
+  | "9"
   | "*"
   | "-"
   | "+" => classifyList(line)
