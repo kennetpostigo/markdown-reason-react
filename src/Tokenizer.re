@@ -29,22 +29,16 @@ type primitives =
   | FootnoteDefinition;
 
 type location = (int, int);
-
-type element = {
+type ast = list(element)
+and element = {
   element: primitives,
-  children,
+  children: ast,
+  textContent: option(string),
   location,
-}
-and children =
-  | Child(element)
-  | Children(list(element))
-  | String(string)
-  | None;
+};
 
-type ast = list(element);
-
-let primitivesToString = line =>
-  switch (line) {
+let primitiveToString = t =>
+  switch (t) {
   | Paragraph => "Paragraph"
   | Blockquote => "Blockquote"
   | Heading(int) => "Heading(" ++ string_of_int(int) ++ ")"
@@ -144,11 +138,7 @@ let stringToPrimitive = line =>
   };
 
 let getDirectoryFiles = directory => "TODO";
-
 let iterDirectoryFiles = fn => "TODO";
-
-let makeTextNode = (s, location) =>
-  Child({element: TextNode, children: String(s), location});
 
 let rec parseMultilineElements =
         (prmtv, chan, accumulatedStr, lineStart, lineEnd) => {
@@ -157,13 +147,14 @@ let rec parseMultilineElements =
     (
       {
         element: prmtv,
-        children: makeTextNode(accumulatedStr, (lineStart, lineEnd)),
+        children: [],
+        textContent: Some(accumulatedStr),
         location: (lineStart, lineEnd),
       },
       lineEnd + 1,
     );
   } else {
-    let nextStr = accumulatedStr ++ next;
+    let nextStr = accumulatedStr ++ "\n" ++ next;
     parseMultilineElements(prmtv, chan, nextStr, lineStart, lineEnd + 1);
   };
 };
@@ -174,7 +165,8 @@ let rec parseLists = (chan, accumulatedList, listType, lineStart, lineEnd) => {
     (
       {
         element: List(listType),
-        children: Children(accumulatedList),
+        children: accumulatedList,
+        textContent: None,
         location: (lineStart, lineEnd),
       },
       lineEnd + 1,
@@ -183,12 +175,8 @@ let rec parseLists = (chan, accumulatedList, listType, lineStart, lineEnd) => {
     let nextList = [
       {
         element: ListItem,
-        children:
-          Child({
-            element: TextNode,
-            children: String(next),
-            location: (lineEnd, lineEnd),
-          }),
+        children: [],
+        textContent: Some(next),
         location: (lineEnd, lineEnd),
       },
       ...accumulatedList,
@@ -231,7 +219,8 @@ let parseFileToAST = filename => {
           [
             {
               element: primitive,
-              children: makeTextNode(line, (startLocation^, startLocation^)),
+              children: [],
+              textContent: Some(line),
               location: (startLocation^, startLocation^),
             },
             ...ast^,
@@ -242,7 +231,109 @@ let parseFileToAST = filename => {
   ) {
   | End_of_file => close_in(chan)
   };
-  ast^;
+  List.rev(ast^);
 };
 
-let rec astToString = (string, ast) => {/* if () */};
+let hasTextContent = tc =>
+  switch (tc) {
+  | Some(s) => s
+  | None => "None"
+  };
+
+let addSpace = depth => {
+  let x = ref(0);
+  let spaces = ref("");
+  while (x^ < depth) {
+    spaces := spaces^ ++ " ";
+    x := x^ + 1;
+  };
+  spaces^;
+};
+
+let rec astToString = (str, ast: ast, depth) =>
+  if (str == "[\n" && ast == []) {
+    "[]";
+  } else {
+    switch (ast) {
+    | [] => depth > 2 ? str ++ addSpace(depth - 2) ++ "]" : str ++ "]\n"
+    | [hd] =>
+      if (str == "[\n") {
+        let (sloc, eloc) = hd.location;
+        let el =
+          renderNode(hd.element, hd.children, hd.textContent, sloc, eloc, 2)
+          ++ "\n";
+        let next = str ++ el;
+        astToString(next, [], depth);
+      } else {
+        let (sloc, eloc) = hd.location;
+        let el =
+          "\n"
+          ++ renderNode(
+               hd.element,
+               hd.children,
+               hd.textContent,
+               sloc,
+               eloc,
+               depth,
+             )
+          ++ "\n";
+        let next = str ++ el;
+        astToString(next, [], depth);
+      }
+    | [hd, ...tl] =>
+      if (str == "[\n") {
+        let (sloc, eloc) = hd.location;
+        let el =
+          renderNode(
+            hd.element,
+            hd.children,
+            hd.textContent,
+            sloc,
+            eloc,
+            depth,
+          )
+          ++ ",\n";
+        let next = str ++ el;
+        astToString(next, tl, depth);
+      } else {
+        let (sloc, eloc) = hd.location;
+        let el =
+          "\n"
+          ++ renderNode(
+               hd.element,
+               hd.children,
+               hd.textContent,
+               sloc,
+               eloc,
+               depth,
+             )
+          ++ ",\n";
+        let next = str ++ el;
+        astToString(next, tl, depth);
+      }
+    };
+  }
+and renderNode = (element, children, textContent, sloc, eloc, depth) =>
+  addSpace(depth)
+  ++ "{\n"
+  ++ addSpace(depth + 2)
+  ++ "element: "
+  ++ primitiveToString(element)
+  ++ ",\n"
+  ++ addSpace(depth + 2)
+  ++ "children: "
+  ++ astToString("[\n", children, depth + 4)
+  ++ ",\n"
+  ++ addSpace(depth + 2)
+  ++ "textContent: "
+  ++ hasTextContent(textContent)
+  ++ ",\n"
+  ++ addSpace(depth + 2)
+  ++ "location: ("
+  ++ string_of_int(sloc)
+  ++ ", "
+  ++ string_of_int(eloc)
+  ++ ")"
+  ++ "\n"
+  ++ addSpace(depth)
+  ++ "}";
