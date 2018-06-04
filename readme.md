@@ -10,12 +10,6 @@ Optionally if you're just making a completely static site you can have a
 directory of just markdown files and nothing else and pass a `--static` that will
 generate a SPA.
 
-## Phases:
-
-1.  Tokenize
-2.  AST
-3.  CodeGen
-
 ## TODO:
 
 * [ ] Parse Markdown

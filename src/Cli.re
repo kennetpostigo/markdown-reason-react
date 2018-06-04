@@ -34,7 +34,7 @@ let () = {
     Codegen.pipePageToFile(
       "sample/readme.md",
       Codegen.generateCodeFromAST(
-        Tokenizer.parseFileToAST("sample/readme.md"),
+        Parser.parseFileToAST("sample/readme.md"),
         "",
         2,
       ),
@@ -42,7 +42,7 @@ let () = {
     Codegen.pipePageToFile(
       "sample/readme.md",
       Codegen.generateCodeFromAST(
-        Tokenizer.parseFileToAST("sample/readme.md"),
+        Parser.parseFileToAST("sample/readme.md"),
         "",
         2,
       ),

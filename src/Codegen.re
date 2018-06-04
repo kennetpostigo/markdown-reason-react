@@ -10,93 +10,93 @@ let getTextContent = (tc, depth) =>
   switch (tc) {
   | Some(s) =>
     "\n"
-    ++ Tokenizer.addSpace(depth + 2)
+    ++ Parser.addSpace(depth + 2)
     ++ "(ReasonReact.string({|"
     ++ s
     ++ "|}))\n"
   | None => ""
   };
 
-let rec renderElement = (node: Tokenizer.element, depth) =>
-  Tokenizer.(
-    switch ((node.element: Tokenizer.primitives)) {
+let rec renderElement = (node: Parser.element, depth) =>
+  Parser.(
+    switch ((node.element: Parser.primitives)) {
     | Heading(1) =>
-      Tokenizer.addSpace(depth)
+      Parser.addSpace(depth)
       ++ "<h1> "
       ++ getTextContent(node.textContent, depth)
-      ++ Tokenizer.addSpace(depth)
+      ++ Parser.addSpace(depth)
       ++ "</h1>\n"
     | Heading(2) =>
-      Tokenizer.addSpace(depth)
+      Parser.addSpace(depth)
       ++ "<h2> "
       ++ getTextContent(node.textContent, depth)
-      ++ Tokenizer.addSpace(depth)
+      ++ Parser.addSpace(depth)
       ++ "</h2>\n"
     | Heading(3) =>
-      Tokenizer.addSpace(depth)
+      Parser.addSpace(depth)
       ++ "<h3> "
       ++ getTextContent(node.textContent, depth)
-      ++ Tokenizer.addSpace(depth)
+      ++ Parser.addSpace(depth)
       ++ "</h3>\n"
     | Heading(4) =>
-      Tokenizer.addSpace(depth)
+      Parser.addSpace(depth)
       ++ "<h4> "
       ++ getTextContent(node.textContent, depth)
-      ++ Tokenizer.addSpace(depth)
+      ++ Parser.addSpace(depth)
       ++ "</h4>\n"
     | Heading(5) =>
-      Tokenizer.addSpace(depth)
+      Parser.addSpace(depth)
       ++ "<h5> "
       ++ getTextContent(node.textContent, depth)
-      ++ Tokenizer.addSpace(depth)
+      ++ Parser.addSpace(depth)
       ++ "</h5>\n"
     | Heading(_) =>
-      Tokenizer.addSpace(depth)
+      Parser.addSpace(depth)
       ++ "<h6> "
       ++ getTextContent(node.textContent, depth)
-      ++ Tokenizer.addSpace(depth)
+      ++ Parser.addSpace(depth)
       ++ "</h6>\n"
     | Blockquote =>
-      Tokenizer.addSpace(depth)
+      Parser.addSpace(depth)
       ++ "<blockquote> "
       ++ getTextContent(node.textContent, depth)
-      ++ Tokenizer.addSpace(depth)
+      ++ Parser.addSpace(depth)
       ++ "</blockquote>\n"
     | Paragraph =>
-      Tokenizer.addSpace(depth)
+      Parser.addSpace(depth)
       ++ "<p>  "
       ++ getTextContent(node.textContent, depth)
-      ++ Tokenizer.addSpace(depth)
+      ++ Parser.addSpace(depth)
       ++ "</p>\n"
     | List(Ordered) =>
-      Tokenizer.addSpace(depth)
+      Parser.addSpace(depth)
       ++ "<ol>"
       ++ listToString(node.children, depth)
-      ++ Tokenizer.addSpace(depth)
+      ++ Parser.addSpace(depth)
       ++ "\n"
-      ++ Tokenizer.addSpace(depth)
+      ++ Parser.addSpace(depth)
       ++ "</ol>\n"
     | List(Unordered) =>
-      Tokenizer.addSpace(depth)
+      Parser.addSpace(depth)
       ++ "<ul>"
       ++ listToString(node.children, depth)
       ++ "\n"
-      ++ Tokenizer.addSpace(depth)
+      ++ Parser.addSpace(depth)
       ++ "</ul>\n"
     | ListItem =>
       "<li> "
       ++ getTextContent(node.textContent, depth + 2)
-      ++ Tokenizer.addSpace(depth + 2)
+      ++ Parser.addSpace(depth + 2)
       ++ "</li>"
     | Code =>
-      Tokenizer.addSpace(depth)
+      Parser.addSpace(depth)
       ++ "<pre>\n"
-      ++ Tokenizer.addSpace(depth + 2)
+      ++ Parser.addSpace(depth + 2)
       ++ "<code>\n"
       ++ getTextContent(node.textContent, depth)
-      ++ Tokenizer.addSpace(depth + 2)
+      ++ Parser.addSpace(depth + 2)
       ++ "</code>\n"
-      ++ Tokenizer.addSpace(depth)
+      ++ Parser.addSpace(depth)
       ++ "</pre>"
     | Break
     | Emphasis
@@ -120,23 +120,23 @@ let rec renderElement = (node: Tokenizer.element, depth) =>
 and listToString = (ls, depth) => {
   let listOfStrings = List.map(el => renderElement(el, depth), ls);
   List.fold_left(
-    (acc, curr) => acc ++ "\n" ++ Tokenizer.addSpace(depth + 2) ++ curr,
+    (acc, curr) => acc ++ "\n" ++ Parser.addSpace(depth + 2) ++ curr,
     "",
     listOfStrings,
   );
 };
 
-let rec generateCodeFromAST = (ast: Tokenizer.ast, page, depth) =>
-  Tokenizer.(
+let rec generateCodeFromAST = (ast: Parser.ast, page, depth) =>
+  Parser.(
     switch (ast) {
     | [] =>
       statelessComponent("Readme")
       ++ makeComponent(
-           Tokenizer.addSpace(4)
+           Parser.addSpace(4)
            ++ "<div>\n"
            ++ page
            ++ "\n"
-           ++ Tokenizer.addSpace(4)
+           ++ Parser.addSpace(4)
            ++ "</div>",
          )
     | [hd] =>

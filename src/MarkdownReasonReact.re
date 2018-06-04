@@ -1,2 +1,2 @@
 module Codegen = Codegen;
-module Tokenizer = Tokenizer;
+module Parser = Parser;
