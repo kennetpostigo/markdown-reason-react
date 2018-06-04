@@ -159,13 +159,14 @@ let rec parseMultilineElements =
   };
 };
 
-let rec parseLists = (chan, accumulatedList, listType, lineStart, lineEnd) => {
-  let next = input_line(chan);
+let rec parseLists =
+        (start, chan, accumulatedList, listType, lineStart, lineEnd) => {
+  let next = start != "$$$" ? start : input_line(chan);
   if (next == "") {
     (
       {
         element: List(listType),
-        children: accumulatedList,
+        children: List.rev(accumulatedList),
         textContent: None,
         location: (lineStart, lineEnd),
       },
@@ -181,7 +182,7 @@ let rec parseLists = (chan, accumulatedList, listType, lineStart, lineEnd) => {
       },
       ...accumulatedList,
     ];
-    parseLists(chan, nextList, listType, lineStart, lineEnd + 1);
+    parseLists("$$$", chan, nextList, listType, lineStart, lineEnd + 1);
   };
 };
 
@@ -208,12 +209,12 @@ let parseFileToAST = filename => {
             startLocation^,
           );
         ast := [el, ...ast^];
-        startLocation := finalLocation;
+        startLocation := finalLocation + 1;
       | List(lt) =>
         let (el, finalLocation) =
-          parseLists(chan, [], lt, startLocation^, startLocation^);
+          parseLists(line, chan, [], lt, startLocation^, startLocation^);
         ast := [el, ...ast^];
-        startLocation := finalLocation;
+        startLocation := finalLocation + 1;
       | _ =>
         ast :=
           [
