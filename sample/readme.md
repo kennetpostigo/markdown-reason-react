@@ -1,3 +1,9 @@
+![markdown-reason-react](assets/md-r-r.png)
+
+[alpha](http://example.com "bravo")
+
+[^alpha bravo]
+
 # markdown-reason-react
 
 > Markdown to Reason React Pages

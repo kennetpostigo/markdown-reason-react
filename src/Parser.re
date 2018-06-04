@@ -1,3 +1,5 @@
+exception MalformedMarkdown(string);
+
 type listTypes =
   | Ordered
   | Unordered;
@@ -106,6 +108,12 @@ let classifyList = line =>
     }
   };
 
+let classifyLinkFootnote = line =>
+  switch (String.sub(line, 1, 1)) {
+  | "^" => Footnote
+  | _ => Link
+  };
+
 let stringToPrimitive = line =>
   switch (String.sub(line, 0, 1)) {
   | "" => Break
@@ -124,13 +132,12 @@ let stringToPrimitive = line =>
   | "*"
   | "-"
   | "+" => classifyList(line)
+  | "[" => classifyLinkFootnote(line)
+  | "!" => Image
   /* | "***" => ThematicBreak */
   /* | "_" => Emphasis
      | "__" => Strong
-     | "~~" => Delete
-     | "[" => Link
-     | "![" => Image
-     | "^[" => Footnote */
+     | "~~" => Delete */
   | exception (Invalid_argument(_e)) => Break
   | _ => Paragraph
   };
@@ -155,6 +162,171 @@ let rec parseMultilineElements =
     let nextStr = accumulatedStr ++ "\n" ++ next;
     parseMultilineElements(prmtv, chan, nextStr, lineStart, lineEnd + 1);
   };
+};
+
+let stringIndex = (prmtv, (sl, el), str, ch, fail) =>
+  switch (String.index(str, ch)) {
+  | i => i
+  | exception Not_found =>
+    fail ?
+      raise(
+        MalformedMarkdown(
+          "The "
+          ++ prmtv
+          ++ " at ("
+          ++ string_of_int(sl)
+          ++ ", "
+          ++ string_of_int(el)
+          ++ ") "
+          ++ "is malformed.",
+        ),
+      ) :
+      (-1)
+  | exception (Invalid_argument(c)) =>
+    fail ?
+      failwith(
+        "MarkdownReasonReact.Parser.safeStringindex: This is a bug, please report it.",
+      ) :
+      (-1)
+  };
+
+let stringIndexFrom = (prmtv, (sl, el), str, index, ch, fail) =>
+  switch (String.index_from(str, index, ch)) {
+  | i => i
+  | exception Not_found =>
+    fail ?
+      raise(
+        MalformedMarkdown(
+          "The "
+          ++ prmtv
+          ++ " at ("
+          ++ string_of_int(sl)
+          ++ ", "
+          ++ string_of_int(el)
+          ++ ") "
+          ++ "is malformed.",
+        ),
+      ) :
+      (-1)
+  | exception (Invalid_argument(c)) =>
+    fail ?
+      failwith(
+        "MarkdownReasonReact.Parser.safeStringindexFrom: This is a bug, please report it.",
+      ) :
+      (-1)
+  };
+
+let stringSub = (prmtv, (sl, el), str, ss, se, fail) =>
+  switch (String.sub(str, ss, se)) {
+  | i => i
+  | exception (Invalid_argument(c)) =>
+    fail ?
+      failwith(
+        "MarkdownReasonReact.Parser.safeStringSub: This is a bug, please report it.",
+      ) :
+      "$$$NotFound$$$"
+  };
+
+let parseImage = (line, locS, locE) => {
+  let altStart = stringIndex("Image", (locS, locE), line, '[', true);
+  let altEnd =
+    stringIndexFrom("Image", (locS, locE), line, altStart, ']', true);
+  let alt =
+    stringSub(
+      "Image",
+      (locS, locE),
+      line,
+      altStart + 1,
+      altEnd - altStart - 1,
+      true,
+    );
+
+  let linkStart =
+    stringIndexFrom("Image", (locS, locE), line, altEnd + 1, '(', true);
+  let linkEnd =
+    stringIndexFrom("Image", (locS, locE), line, linkStart, ')', true);
+  let link =
+    stringSub(
+      "Image",
+      (locS, locE),
+      line,
+      linkStart + 1,
+      linkEnd - linkStart - 1,
+      true,
+    );
+
+  (
+    {
+      element: Image,
+      children: [],
+      textContent: Some(alt ++ " " ++ link),
+      location: (locS, locE),
+    },
+    locE,
+  );
+};
+
+let rec parseLink = (line, locS, locE) => {
+  let titleStart = stringIndex("Link", (locS, locE), line, '[', true);
+  let titleEnd =
+    stringIndexFrom("Link", (locS, locE), line, titleStart, ']', true);
+  let title =
+    stringSub(
+      "Link",
+      (locS, locE),
+      line,
+      titleStart + 1,
+      titleEnd - titleStart - 1,
+      true,
+    );
+
+  let linkStart =
+    stringIndexFrom("Link", (locS, locE), line, titleEnd + 1, '(', true);
+  let linkEnd =
+    stringIndexFrom("Link", (locS, locE), line, linkStart, ')', true);
+  let link =
+    stringSub(
+      "Link",
+      (locS, locE),
+      line,
+      linkStart + 1,
+      linkEnd - linkStart - 1,
+      true,
+    );
+
+  (
+    {
+      element: Link,
+      children: [],
+      textContent: Some(title ++ " " ++ link),
+      location: (locS, locE),
+    },
+    locE,
+  );
+};
+
+let rec parseFootnote = (line, locS, locE) => {
+  let txtStart = stringIndex("Footnote", (locS, locE), line, '^', true);
+  let txtEnd =
+    stringIndexFrom("Footnote", (locS, locE), line, txtStart, ']', true);
+  let txt =
+    stringSub(
+      "Footnote",
+      (locS, locE),
+      line,
+      txtStart + 1,
+      txtEnd - txtStart - 1,
+      true,
+    );
+  (
+    {
+      element: Footnote,
+      children: [],
+      textContent: Some(txt),
+      location: (locS, locE),
+    },
+    locE,
+  );
 };
 
 let rec parseLists =
@@ -206,6 +378,21 @@ let parseFileToAST = filename => {
             startLocation^,
             startLocation^,
           );
+        ast := [el, ...ast^];
+        startLocation := finalLocation + 1;
+      | Link =>
+        let (el, finalLocation) =
+          parseLink(line, startLocation^, startLocation^);
+        ast := [el, ...ast^];
+        startLocation := finalLocation + 1;
+      | Image =>
+        let (el, finalLocation) =
+          parseImage(line, startLocation^, startLocation^);
+        ast := [el, ...ast^];
+        startLocation := finalLocation + 1;
+      | Footnote =>
+        let (el, finalLocation) =
+          parseFootnote(line, startLocation^, startLocation^);
         ast := [el, ...ast^];
         startLocation := finalLocation + 1;
       | List(lt) =>
