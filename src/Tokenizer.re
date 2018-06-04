@@ -6,7 +6,6 @@ type primitives =
   | Heading(int)
   | Blockquote
   | Paragraph
-  | TextNode
   | Break
   | Emphasis
   | Strong
@@ -63,7 +62,6 @@ let primitiveToString = t =>
   | FootnoteReference => "FootnoteReference"
   | Definition => "Definition"
   | FootnoteDefinition => "FootnoteDefinition"
-  | TextNode => "TextNode"
   };
 
 let classifyHeading = line =>
