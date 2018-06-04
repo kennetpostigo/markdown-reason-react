@@ -1,6 +1,6 @@
 open Types;
 
-let classifyHeading = line =>
+let parseHeading = line =>
   if (String.sub(line, 0, 2) == "# ") {
     Heading(1);
   } else if (String.sub(line, 0, 3) == "## ") {
@@ -15,14 +15,14 @@ let classifyHeading = line =>
     Heading(6);
   };
 
-let classifyCode = line =>
+let parseCode = line =>
   if (String.sub(line, 0, 3) == "```") {
     Code;
   } else {
     InlineCode;
   };
 
-let classifyList = line =>
+let parseList = line =>
   switch (String.sub(line, 0, 2)) {
   | "* "
   | "- "
@@ -42,18 +42,18 @@ let classifyList = line =>
     }
   };
 
-let classifyLinkFootnote = line =>
+let parseLinkFootnote = line =>
   switch (String.sub(line, 1, 1)) {
   | "^" => Footnote
   | _ => Link
   };
 
-let stringToPrimitive = line =>
+let parsePrimitives = line =>
   switch (String.sub(line, 0, 1)) {
   | "" => Break
   | ">" => Blockquote
-  | "#" => classifyHeading(line)
-  | "`" => classifyCode(line)
+  | "#" => parseHeading(line)
+  | "`" => parseCode(line)
   | "1"
   | "2"
   | "3"
@@ -65,8 +65,8 @@ let stringToPrimitive = line =>
   | "9"
   | "*"
   | "-"
-  | "+" => classifyList(line)
-  | "[" => classifyLinkFootnote(line)
+  | "+" => parseList(line)
+  | "[" => parseLinkFootnote(line)
   | "!" => Image
   /* | "***" => ThematicBreak */
   /* | "_" => Emphasis
@@ -87,7 +87,7 @@ let parseFileToAST = filename => {
   try (
     while (true) {
       let line = input_line(chan);
-      let primitive = stringToPrimitive(line);
+      let primitive = parsePrimitives(line);
 
       switch (primitive) {
       | Paragraph
