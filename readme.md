@@ -10,14 +10,15 @@ Optionally if you're just making a completely static site you can have a
 directory of just markdown files and nothing else and pass a `--static` that will
 generate a SPA.
 
-## TODO:
+## Tasks
 
-* [ ] Parse Markdown
-* [ ] Parse HTML in Markdown
-* [ ] Parse YAML in Markdown
-* [ ] Support Components in Markdown
-* [ ] Generate AST
-* [ ] Codegen ReasonReact Pages
+* [x] Parse top level elements
+* [ ] Parse inline elements
+* [x] Generate AST
+* [x] Codegen top level elements
+* [ ] Codegen inline elements
+* [ ] Highlight Code Blocks
+* [ ] Interpolate ReasonReact Components
 
 ```shell
                                  MARKDOWN-TO-REASON-REACT
