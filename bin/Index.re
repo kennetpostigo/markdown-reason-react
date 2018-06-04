@@ -8,7 +8,7 @@
    ); */
 
 print_string(
-  MarkdownReasonReact.Parser.astToString(
+  MarkdownReasonReact.Ast.astToString(
     "[\n",
     MarkdownReasonReact.Parser.parseFileToAST("./sample/readme.md"),
     2,
