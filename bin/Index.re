@@ -1,7 +1,7 @@
 print_string(
-  MarkdownReasonReact.Tokenizer.astToString(
-    "[\n",
+  MarkdownReasonReact.Codegen.generateCodeFromAST(
     MarkdownReasonReact.Tokenizer.parseFileToAST("readme.md"),
-    2,
+    "",
+    6,
   ),
 );
