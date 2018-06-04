@@ -1,4 +1,4 @@
-![markdown-reason-react](assets/md-to-rr.png)
+![markdown-reason-react](assets/md-r-r.png)
 
 The goal of this library is to create a CLI that will take a directory of
 markdown files and then spit out those same markdown files as `reason-react`
