@@ -31,16 +31,18 @@ let () = {
   version^ ? print_string("0.1.0\n") : ();
 
   static^ ?
-    print_string(
+    Codegen.pipePageToFile(
+      "sample/readme.md",
       Codegen.generateCodeFromAST(
-        Tokenizer.parseFileToAST("readm.md"),
+        Tokenizer.parseFileToAST("sample/readme.md"),
         "",
         2,
       ),
     ) :
-    print_string(
+    Codegen.pipePageToFile(
+      "sample/readme.md",
       Codegen.generateCodeFromAST(
-        Tokenizer.parseFileToAST("readme.md"),
+        Tokenizer.parseFileToAST("sample/readme.md"),
         "",
         2,
       ),

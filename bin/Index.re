@@ -1,6 +1,7 @@
-print_string(
+MarkdownReasonReact.Codegen.pipePageToFile(
+  "./sample/Readme.re",
   MarkdownReasonReact.Codegen.generateCodeFromAST(
-    MarkdownReasonReact.Tokenizer.parseFileToAST("readme.md"),
+    MarkdownReasonReact.Tokenizer.parseFileToAST("./sample/readme.md"),
     "",
     6,
   ),

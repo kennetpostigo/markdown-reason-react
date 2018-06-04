@@ -1,19 +1,19 @@
 let statelessComponent = filename =>
-  "let component = ReasonReact.statelessComponent(" ++ filename ++ ");\n";
+  "let component = ReasonReact.statelessComponent(\"" ++ filename ++ "\");\n";
 
 let makeComponent = elements =>
   "let make = children => {\n  ...component,\n  render: (_self) => {\n"
   ++ elements
-  ++ "\n}";
+  ++ "\n  }\n}";
 
 let getTextContent = (tc, depth) =>
   switch (tc) {
   | Some(s) =>
     "\n"
     ++ Tokenizer.addSpace(depth + 2)
-    ++ "ReasonReact.string(\""
+    ++ "(ReasonReact.string({|"
     ++ s
-    ++ "\")\n"
+    ++ "|}))\n"
   | None => ""
   };
 
@@ -94,8 +94,9 @@ let rec renderElement = (node: Tokenizer.element, depth) =>
       ++ Tokenizer.addSpace(depth + 2)
       ++ "<code>\n"
       ++ getTextContent(node.textContent, depth)
-      ++ "</code>\n"
       ++ Tokenizer.addSpace(depth + 2)
+      ++ "</code>\n"
+      ++ Tokenizer.addSpace(depth)
       ++ "</pre>"
     | Break
     | Emphasis
