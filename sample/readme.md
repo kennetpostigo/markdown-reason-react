@@ -1,4 +1,4 @@
-![markdown-reason-react](assets/md-r-r.png)
+![markdown-reason-react](https://reasonml.github.io/img/reason.svg)
 
 [alpha](http://example.com "bravo")
 
@@ -8,19 +8,75 @@
 
 > Markdown to Reason React Pages
 
-The goal of this library is to create a CLI that will take a directory of
+> # markdown-reason-react
+
+The goal [alpha](http://example.com "bravo")
+of this library is to ![markdown-reason-react](https://reasonml.github.io/img/reason.svg) create a CLI that will take a directory of
 markdown files and then spit out those same markdown files as `reason-react`
 pages.
 
-Optionally if you're just making a completely static site you can have a
-directory of just markdown files and nothing else and pass a `--static` that will
+Optionally # if ~~you're~~ just _making_ a _completely_ static site you can have a
+directory of just **markdown** files and **nothing** else and pass a `--static` that will
 generate a SPA.
 
-## Phases:
+## Ordered List:
 
-1.  Tokenize
-2.  AST
-3.  CodeGen
+1. Tokenize
+2. AST
+3. CodeGen
+
+## Unordered List:
+
+* Tokenize
+* AST
+* CodeGen
+
+## Ordered List with nested Ordered:
+
+1. Tokenize
+    1. test1
+2. AST
+    1. test2
+3. CodeGen
+
+    1. test3
+
+## Unordered with newsted Unordered:
+
+* Tokenize
+  * test1
+* AST
+  * test2
+* CodeGen
+  * test3
+
+## Ordered List with nested Unordered:
+
+1. Tokenize
+    * test1
+2. AST
+    * test2
+3. CodeGen
+    * test3
+
+## Unordered with newsted Unordered:
+
+* Tokenize
+  1. test1
+* AST
+  1. test2
+* CodeGen
+
+  1. test3
+
+## Unordered with newsted Unordered:
+
+* Tokenize
+  1. # test1
+* AST
+  1. # test2
+* CodeGen
+  1. # test3
 
 ## TODO:
 
