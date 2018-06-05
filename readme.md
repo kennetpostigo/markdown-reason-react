@@ -15,6 +15,7 @@ generate a SPA.
 * [x] Generate AST
 * [x] Codegen top level elements
 * [ ] Codegen inline elements
+* [x] Refmt generated code
 * [ ] Highlight Code Blocks
 * [ ] Interpolate ReasonReact Components
 
