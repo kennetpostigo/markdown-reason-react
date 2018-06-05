@@ -3,6 +3,11 @@ let make = children => {
   ...component,
   render: _self =>
     <div>
+      <img src="assets/md-r-r.png" alt="markdown-reason-react" />
+      <a href="http://example.com" title="alpha">
+        (ReasonReact.string({|"bravo"|}))
+      </a>
+      <sup> (ReasonReact.string({|alpha bravo|})) </sup>
       <h1> (ReasonReact.string({|# markdown-reason-react|})) </h1>
       <blockquote>
         (ReasonReact.string({|> Markdown to Reason React Pages|}))

@@ -36,7 +36,6 @@ let () = {
       Codegen.generateCodeFromAST(
         Parser.parseFileToAST("sample/readme.md"),
         "",
-        2,
       ),
     ) :
     Codegen.pipePageToFile(
@@ -44,7 +43,6 @@ let () = {
       Codegen.generateCodeFromAST(
         Parser.parseFileToAST("sample/readme.md"),
         "",
-        2,
       ),
     );
 };

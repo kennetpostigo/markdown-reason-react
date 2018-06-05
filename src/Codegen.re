@@ -8,50 +8,61 @@ let makeComponent = elements =>
   ++ elements
   ++ "\n  }\n}";
 
-let getTextContent = (tc, depth) =>
+let getTextContent = tc =>
   switch (tc) {
-  | Some(s) =>
-    "\n"
-    ++ Utils.addSpace(depth + 2)
-    ++ "(ReasonReact.string({|"
-    ++ s
-    ++ "|}))\n"
+  | Some(s) => "\n" ++ "(ReasonReact.string({|" ++ s ++ "|}))\n"
   | None => ""
   };
 
-let rec renderElement = (node: element, depth) =>
+let renderText = s => "\n" ++ "(ReasonReact.string({|" ++ s ++ "|}))\n";
+
+let getRawTextContent = tc =>
+  switch (tc) {
+  | Some(s) => s
+  | None => ""
+  };
+
+let rec renderElement = (node: element) =>
   Parser.(
     switch ((node.element: primitives)) {
-    | Heading(1) =>
-      "<h1> " ++ getTextContent(node.textContent, depth) ++ "</h1>\n"
-    | Heading(2) =>
-      "<h2> " ++ getTextContent(node.textContent, depth) ++ "</h2>\n"
-    | Heading(3) =>
-      "<h3> " ++ getTextContent(node.textContent, depth) ++ "</h3>\n"
-    | Heading(4) =>
-      "<h4> " ++ getTextContent(node.textContent, depth) ++ "</h4>\n"
-    | Heading(5) =>
-      "<h5> " ++ getTextContent(node.textContent, depth) ++ "</h5>\n"
-    | Heading(_) =>
-      "<h6> " ++ getTextContent(node.textContent, depth) ++ "</h6>\n"
+    | Heading(1) => "<h1>" ++ getTextContent(node.textContent) ++ "</h1>\n"
+    | Heading(2) => "<h2>" ++ getTextContent(node.textContent) ++ " </h2>\n"
+    | Heading(3) => "<h3>" ++ getTextContent(node.textContent) ++ "</h3>\n"
+    | Heading(4) => "<h4>" ++ getTextContent(node.textContent) ++ " </h4>\n"
+    | Heading(5) => "<h5>" ++ getTextContent(node.textContent) ++ "</h5>\n"
+    | Heading(_) => "<h6>" ++ getTextContent(node.textContent) ++ "</h6>\n"
     | Blockquote =>
-      "<blockquote> "
-      ++ getTextContent(node.textContent, depth)
-      ++ "</blockquote>\n"
-    | Paragraph =>
-      "<p>  " ++ getTextContent(node.textContent, depth) ++ "</p>\n"
+      "<blockquote>" ++ getTextContent(node.textContent) ++ "</blockquote>\n"
+    | Paragraph => "<p>" ++ getTextContent(node.textContent) ++ "</p>\n"
     | List(Ordered) =>
-      "<ol>" ++ listToString(node.children, depth) ++ "\n" ++ "</ol>\n"
+      "<ol>" ++ listToString(node.children) ++ "\n" ++ "</ol>\n"
     | List(Unordered) =>
-      "<ul>" ++ listToString(node.children, depth) ++ "\n" ++ "</ul>\n"
-    | ListItem =>
-      "<li> " ++ getTextContent(node.textContent, depth + 2) ++ "</li>"
+      "<ul>" ++ listToString(node.children) ++ "\n" ++ "</ul>\n"
+    | ListItem => "<li>" ++ getTextContent(node.textContent) ++ "</li>"
     | Code =>
       "<pre>\n"
       ++ "<code>\n"
-      ++ getTextContent(node.textContent, depth)
+      ++ getTextContent(node.textContent)
       ++ "</code>\n"
       ++ "</pre>"
+    | Link =>
+      let [hd, md, en] =
+        String.split_on_char(' ', getRawTextContent(node.textContent));
+      "<a href=\""
+      ++ md
+      ++ "\""
+      ++ "title=\""
+      ++ hd
+      ++ "\">\n"
+      ++ renderText(en)
+      ++ "\n</a>";
+
+    | Image =>
+      let [hd, en] =
+        String.split_on_char(' ', getRawTextContent(node.textContent));
+      "\n<img src=\"" ++ en ++ "\" alt=\"" ++ hd ++ "\" />\n";
+
+    | Footnote => "<sup>" ++ getTextContent(node.textContent) ++ "</sup>\n"
     | Break
     | Emphasis
     | Strong
@@ -61,9 +72,6 @@ let rec renderElement = (node: element, depth) =>
     | TableRow
     | TableCell
     | ThematicBreak
-    | Link
-    | Image
-    | Footnote
     | LinkReference
     | ImageReference
     | FootnoteReference
@@ -71,21 +79,19 @@ let rec renderElement = (node: element, depth) =>
     | FootnoteDefinition => ""
     }
   )
-and listToString = (ls, depth) => {
-  let listOfStrings = List.map(el => renderElement(el, depth), ls);
+and listToString = ls => {
+  let listOfStrings = List.map(el => renderElement(el), ls);
   List.fold_left((acc, curr) => acc ++ "\n" ++ curr, "", listOfStrings);
 };
 
-let rec generateCodeFromAST = (ast: ast, page, depth) =>
+let rec generateCodeFromAST = (ast: ast, page) =>
   Parser.(
     switch (ast) {
     | [] =>
       statelessComponent("Readme")
       ++ makeComponent("<div>\n" ++ page ++ "\n" ++ "</div>")
-    | [hd] =>
-      generateCodeFromAST([], page ++ renderElement(hd, depth), depth)
-    | [hd, ...tl] =>
-      generateCodeFromAST(tl, page ++ renderElement(hd, depth), depth)
+    | [hd] => generateCodeFromAST([], page ++ renderElement(hd))
+    | [hd, ...tl] => generateCodeFromAST(tl, page ++ renderElement(hd))
     }
   );
 
