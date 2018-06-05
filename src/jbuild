@@ -2,4 +2,5 @@
 
 (library
  ((name MarkdownReasonReact)
-  (public_name markdown-reason-react)))
+  (public_name markdown-reason-react)
+  (libraries (reason))))

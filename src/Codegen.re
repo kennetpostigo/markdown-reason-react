@@ -90,6 +90,14 @@ let rec generateCodeFromAST = (ast: ast, page, depth) =>
   );
 
 let pipePageToFile = (file, page) => {
+  let formattedCode =
+    Lexing.from_string(page)
+    |> Reason_toolchain.RE.implementation_with_comments
+    |> Reason_toolchain.RE.print_implementation_with_comments(
+         Format.str_formatter,
+       )
+    |> Format.flush_str_formatter;
+
   let fd = open_out(file);
-  Printf.fprintf(fd, "%s", page);
+  Printf.fprintf(fd, "%s", formattedCode);
 };
