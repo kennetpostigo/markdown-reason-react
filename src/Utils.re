@@ -151,3 +151,11 @@ let nodeToString = (element: element) => {
   ++ addSpace(0)
   ++ "}";
 };
+
+let codegenToString = (file, page) =>
+  Lexing.from_string(page)
+  |> Reason_toolchain.RE.implementation_with_comments
+  |> Reason_toolchain.RE.print_implementation_with_comments(
+       Format.str_formatter,
+     )
+  |> Format.flush_str_formatter;

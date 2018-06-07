@@ -26,9 +26,9 @@ let rec renderElement = (node: element) =>
   Parser.(
     switch ((node.element: primitives)) {
     | Heading(1) => "<h1>" ++ getTextContent(node.textContent) ++ "</h1>\n"
-    | Heading(2) => "<h2>" ++ getTextContent(node.textContent) ++ " </h2>\n"
+    | Heading(2) => "<h2>" ++ getTextContent(node.textContent) ++ "</h2>\n"
     | Heading(3) => "<h3>" ++ getTextContent(node.textContent) ++ "</h3>\n"
-    | Heading(4) => "<h4>" ++ getTextContent(node.textContent) ++ " </h4>\n"
+    | Heading(4) => "<h4>" ++ getTextContent(node.textContent) ++ "</h4>\n"
     | Heading(5) => "<h5>" ++ getTextContent(node.textContent) ++ "</h5>\n"
     | Heading(_) => "<h6>" ++ getTextContent(node.textContent) ++ "</h6>\n"
     | Blockquote =>
@@ -41,26 +41,26 @@ let rec renderElement = (node: element) =>
     | ListItem => "<li>" ++ getTextContent(node.textContent) ++ "</li>"
     | Code =>
       "<pre>\n"
-      ++ "<code>\n"
+      ++ "<code>"
       ++ getTextContent(node.textContent)
       ++ "</code>\n"
-      ++ "</pre>"
+      ++ "</pre>\n"
     | Link =>
       let [hd, md, en] =
         String.split_on_char(' ', getRawTextContent(node.textContent));
       "<a href=\""
       ++ md
       ++ "\""
-      ++ "title=\""
-      ++ hd
-      ++ "\">\n"
-      ++ renderText(en)
-      ++ "\n</a>";
+      ++ " title=\""
+      ++ en
+      ++ "\">"
+      ++ renderText(hd)
+      ++ "</a>\n";
 
     | Image =>
       let [hd, en] =
         String.split_on_char(' ', getRawTextContent(node.textContent));
-      "\n<img src=\"" ++ en ++ "\" alt=\"" ++ hd ++ "\" />\n";
+      "<img src=\"" ++ en ++ "\" alt=\"" ++ hd ++ "\" />\n";
 
     | Footnote => "<sup>" ++ getTextContent(node.textContent) ++ "</sup>\n"
     | Break

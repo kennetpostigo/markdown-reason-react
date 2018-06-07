@@ -7,10 +7,10 @@ let astOfLink = () =>
     {|{
   element: Link,
   children: [],
-  textContent: link http://lol.to,
+  textContent: link http://lol.to title,
   location: (1, 1)
 }|},
-    Utils.nodeToString(Ast.nodeOfLink("[link](http://lol.to)", 1, 1)),
+    Utils.nodeToString(Ast.nodeOfLink("[link](http://lol.to title)", 1, 1)),
   );
 
 let astOfImage = () =>
