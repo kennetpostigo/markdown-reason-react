@@ -1,183 +1,207 @@
 open Types;
 
-let rec nodeOfLink = (line, locS, locE) => {
-  let titleStart = Utils.stringIndex("Link", (locS, locE), line, '[', true);
-  let titleEnd =
-    Utils.stringIndexFrom("Link", (locS, locE), line, titleStart, ']', true);
-  let title =
-    Utils.stringSub(
-      "Link",
-      (locS, locE),
-      line,
-      titleStart + 1,
-      titleEnd - titleStart - 1,
-      true,
-    );
+let nodeOfHeading = (line, level, locS, locE) => {
+  element: Heading(level),
+  startLoc: locS,
+  endLoc: locE,
+  nestRule: [],
+  children: [],
+  textContent: None,
+};
 
-  let linkStart =
-    Utils.stringIndexFrom(
-      "Link",
-      (locS, locE),
-      line,
-      titleEnd + 1,
-      '(',
-      true,
-    );
-  let linkEnd =
-    Utils.stringIndexFrom("Link", (locS, locE), line, linkStart, ')', true);
+let nodeOfLink = (line, locS, locE) => {
+  let prtv = "Link";
+  let tEnd = ref(0);
+
+  let title =
+    switch (Utils.strIdx(prtv, (locS, locE), line, '[', true)) {
+    | Some(tS) =>
+      switch (Utils.strIdxFrom(prtv, (locS, locE), line, tS, ']', true)) {
+      | Some(tE) =>
+        switch (
+          Utils.strSub(prtv, (locS, locE), line, tS + 1, tE - tS - 1, true)
+        ) {
+        | Some(sub) =>
+          tEnd := tE;
+          sub;
+        | None => ""
+        }
+      | None => ""
+      }
+    | None => ""
+    };
+
   let link =
-    Utils.stringSub(
-      "Link",
-      (locS, locE),
-      line,
-      linkStart + 1,
-      linkEnd - linkStart - 1,
-      true,
-    );
+    switch (Utils.strIdxFrom(prtv, (locS, locE), line, tEnd^ + 1, '(', true)) {
+    | Some(lS) =>
+      switch (Utils.strIdxFrom(prtv, (locS, locE), line, lS, ')', true)) {
+      | Some(lE) =>
+        switch (
+          Utils.strSub(prtv, (locS, locE), line, lS + 1, lE - lS - 1, true)
+        ) {
+        | Some(sub) => sub
+        | None => ""
+        }
+      | None => ""
+      }
+    | None => ""
+    };
 
   {
     element: Link,
+    startLoc: locS,
+    endLoc: locE,
+    nestRule: [],
     children: [],
     textContent: Some(title ++ " " ++ link),
-    location: (locS, locE),
   };
 };
 
 let nodeOfImage = (line, locS, locE) => {
-  let altStart = Utils.stringIndex("Image", (locS, locE), line, '[', true);
-  let altEnd =
-    Utils.stringIndexFrom("Image", (locS, locE), line, altStart, ']', true);
-  let alt =
-    Utils.stringSub(
-      "Image",
-      (locS, locE),
-      line,
-      altStart + 1,
-      altEnd - altStart - 1,
-      true,
-    );
+  let prtv = "Image";
+  let aEnd = ref(0);
 
-  let linkStart =
-    Utils.stringIndexFrom(
-      "Image",
-      (locS, locE),
-      line,
-      altEnd + 1,
-      '(',
-      true,
-    );
-  let linkEnd =
-    Utils.stringIndexFrom("Image", (locS, locE), line, linkStart, ')', true);
+  let alt =
+    switch (Utils.strIdx(prtv, (locS, locE), line, '[', true)) {
+    | Some(aS) =>
+      switch (Utils.strIdxFrom(prtv, (locS, locE), line, aS, ']', true)) {
+      | Some(aE) =>
+        switch (
+          Utils.strSub(prtv, (locS, locE), line, aS + 1, aE - aS - 1, true)
+        ) {
+        | Some(sub) =>
+          aEnd := aE;
+          sub;
+        | None => ""
+        }
+      | None => ""
+      }
+    | None => ""
+    };
+
   let link =
-    Utils.stringSub(
-      "Image",
-      (locS, locE),
-      line,
-      linkStart + 1,
-      linkEnd - linkStart - 1,
-      true,
-    );
+    switch (Utils.strIdxFrom(prtv, (locS, locE), line, aEnd^ + 1, '(', true)) {
+    | Some(lS) =>
+      switch (Utils.strIdxFrom(prtv, (locS, locE), line, lS, ')', true)) {
+      | Some(lE) =>
+        switch (
+          Utils.strSub(prtv, (locS, locE), line, lS + 1, lE - lS - 1, true)
+        ) {
+        | Some(sub) => sub
+        | None => ""
+        }
+      | None => ""
+      }
+    | None => ""
+    };
 
   {
     element: Image,
+    startLoc: locS,
+    endLoc: locE,
+    nestRule: [],
     children: [],
     textContent: Some(alt ++ " " ++ link),
-    location: (locS, locE),
   };
 };
 
-let rec nodeOfFootnote = (line, locS, locE) => {
-  let txtStart =
-    Utils.stringIndex("Footnote", (locS, locE), line, '^', true);
-  let txtEnd =
-    Utils.stringIndexFrom(
-      "Footnote",
-      (locS, locE),
-      line,
-      txtStart,
-      ']',
-      true,
-    );
+let nodeOfFootnote = (line, locS, locE) => {
+  let prtv = "Footnote";
+
   let txt =
-    Utils.stringSub(
-      "Footnote",
-      (locS, locE),
-      line,
-      txtStart + 1,
-      txtEnd - txtStart - 1,
-      true,
-    );
+    switch (Utils.strIdx(prtv, (locS, locE), line, '^', true)) {
+    | Some(tS) =>
+      switch (Utils.strIdxFrom(prtv, (locS, locE), line, tS, ']', true)) {
+      | Some(tE) =>
+        switch (
+          Utils.strSub(prtv, (locS, locE), line, tS + 1, tE - tS - 1, true)
+        ) {
+        | Some(sub) => sub
+        | None => ""
+        }
+      | None => ""
+      }
+    | None => ""
+    };
 
   {
     element: Footnote,
+    startLoc: locS,
+    endLoc: locE,
+    nestRule: [],
     children: [],
     textContent: Some(txt),
-    location: (locS, locE),
   };
 };
 
-let rec nodeOfBlockquote = (chan, str, lineS, lineE) => {
-  let next =
-    switch (input_line(chan)) {
-    | s => s
-    | exception End_of_file => "$$$EndOFFile$$$"
-    };
-
-  if (next == "$$$EndOFFile$$$") {
-    {
-      element: Blockquote,
-      children: [],
-      textContent: Some(str),
-      location: (lineS, lineE),
-    };
-  } else {
-    let nextEnd = str == "" && lineE == 1 ? 1 : lineE + 1;
-    let nextStr = str ++ (str == "" ? "" : "\n") ++ next;
-    nodeOfBlockquote(chan, nextStr, lineS, nextEnd);
-  };
+let nodeOfBreak = (locS, locE) => {
+  element: Break,
+  startLoc: locS,
+  endLoc: locE,
+  nestRule: [],
+  children: [],
+  textContent: None,
 };
 
-let rec nodeOfParagraph = (chan, str, lineS, lineE) => {
-  let next =
-    switch (input_line(chan)) {
-    | s => s
-    | exception End_of_file => "$$$EndOFFile$$$"
-    };
-
-  if (next == "$$$EndOFFile$$$") {
-    {
+let rec nodeOfParagraph = (lines, str, locS, locE) =>
+  switch (lines) {
+  | [] => {
       element: Paragraph,
+      startLoc: locS,
+      endLoc: locE,
+      nestRule: [],
       children: [],
       textContent: Some(str),
-      location: (lineS, lineE),
-    };
-  } else {
-    let nextEnd = str == "" && lineE == 1 ? 1 : lineE + 1;
-    let nextStr = str ++ (str == "" ? "" : "\n") ++ next;
-    nodeOfParagraph(chan, nextStr, lineS, nextEnd);
+    }
+  | [hd] =>
+    let nextEnd = str == "" && locS == locE ? locE : locE + 1;
+    let nextStr = str ++ (str == "" ? "" : "\n") ++ hd;
+    nodeOfParagraph([], nextStr, locS, nextEnd);
+  | [hd, ...tl] =>
+    let nextEnd = str == "" && locS == locE ? locE : locE + 1;
+    let nextStr = str ++ (str == "" ? "" : "\n") ++ hd;
+    nodeOfParagraph(tl, nextStr, locS, nextEnd);
   };
-};
 
-let rec nodeOfCode = (chan, str, lineS, lineE) => {
-  let next =
-    switch (input_line(chan)) {
-    | s => s
-    | exception End_of_file => "$$$EndOFFile$$$"
-    };
+let rec nodeOfBlockquote = (lines, str, locS, locE) =>
+  switch (lines) {
+  | [] => {
+      element: Blockquote,
+      startLoc: locS,
+      endLoc: locE,
+      nestRule: [],
+      children: [],
+      textContent: Some(str),
+    }
+  | [hd] =>
+    let nextEnd = str == "" && locS == locE ? locE : locE + 1;
+    let nextStr = str ++ (str == "" ? "" : "\n") ++ hd;
+    nodeOfBlockquote([], nextStr, locS, nextEnd);
+  | [hd, ...tl] =>
+    let nextEnd = str == "" && locS == locE ? locE : locE + 1;
+    let nextStr = str ++ (str == "" ? "" : "\n") ++ hd;
+    nodeOfBlockquote(tl, nextStr, locS, nextEnd);
+  };
 
-  if (next == "$$$EndOFFile$$$") {
-    {
+let rec nodeOfCode = (lines, str, locS, locE) =>
+  switch (lines) {
+  | [] => {
       element: Code,
+      startLoc: locS,
+      endLoc: locE,
+      nestRule: [],
       children: [],
       textContent: Some(str),
-      location: (lineS, lineE),
-    };
-  } else {
-    let nextEnd = str == "" && lineE == 1 ? 1 : lineE + 1;
-    let nextStr = str ++ (str == "" ? "" : "\n") ++ next;
-    nodeOfCode(chan, nextStr, lineS, nextEnd);
+    }
+  | [hd] =>
+    let nextEnd = str == "" && locS == locE ? locE : locE + 1;
+    let nextStr = str ++ (str == "" ? "" : "\n") ++ hd;
+    nodeOfCode([], nextStr, locS, nextEnd);
+  | [hd, ...tl] =>
+    let nextEnd = str == "" && locS == locE ? locE : locE + 1;
+    let nextStr = str ++ (str == "" ? "" : "\n") ++ hd;
+    nodeOfCode(tl, nextStr, locS, nextEnd);
   };
-};
 
 let getListType = line =>
   switch (String.sub(String.trim(line), 0, 2)) {
@@ -187,53 +211,31 @@ let getListType = line =>
   | _ => Ordered
   };
 
-/*
-  How to create AST for potentially infinitely nested lists
-   1. If indent is equal then add the element as a ListItem into the accumulatedList
-   2. If indent is greater recurse creating a new List with it's children inside, then add that       list as an element to the accumulatedList.
-   3. If indent is lesser
- */
-let rec nodeOfLists = (start, chan, list, listType, lineS, lineE) => {
-  print_string("next: " ++ start ++ "\n");
-  if (start == "") {
-    print_string("HIT next == empty\n");
+let rec nodeOfLists = (line, list, listType, locS, locE) =>
+  if (line == "") {
     {
       element: List(listType),
+      startLoc: locS,
+      endLoc: locE,
+      nestRule: [],
       children: List.rev(list),
       textContent: None,
-      location: (lineS, lineE - 1),
     };
   } else {
-    print_string("HIT else\n");
     let nextList = [
       {
         element: ListItem,
+        startLoc: locS,
+        endLoc: locE,
+        nestRule: [],
         children: [],
-        textContent: Some(start),
-        location: (lineE, lineE),
+        textContent: Some(line),
       },
       ...list,
     ];
 
-    let line = input_line(chan);
-    nodeOfLists(line, chan, nextList, listType, lineS, lineE + 1);
+    nodeOfLists(line, nextList, listType, locS, locE + 1);
   };
-};
-
-let rec nodeOfMultilineElements = (prmtv, chan, str, lineS, lineE) => {
-  let next = input_line(chan);
-  if (next == (prmtv == Code ? "```" : "")) {
-    {
-      element: prmtv,
-      children: [],
-      textContent: Some(str),
-      location: (lineS, lineE),
-    };
-  } else {
-    let nextStr = str ++ "\n" ++ next;
-    nodeOfMultilineElements(prmtv, chan, nextStr, lineS, lineE + 1);
-  };
-};
 
 let rec astToString = (str, ast: ast, depth) =>
   if (str == "[\n" && ast == []) {
@@ -243,22 +245,27 @@ let rec astToString = (str, ast: ast, depth) =>
     | [] => depth > 2 ? str ++ Utils.addSpace(depth - 2) ++ "]" : str ++ "]\n"
     | [hd] =>
       if (str == "[\n") {
-        let (sloc, eloc) = hd.location;
         let el =
-          renderNode(hd.element, hd.children, hd.textContent, sloc, eloc, 2)
+          renderNode(
+            hd.element,
+            hd.children,
+            hd.textContent,
+            hd.startLoc,
+            hd.endLoc,
+            2,
+          )
           ++ "\n";
         let next = str ++ el;
         astToString(next, [], depth);
       } else {
-        let (sloc, eloc) = hd.location;
         let el =
           "\n"
           ++ renderNode(
                hd.element,
                hd.children,
                hd.textContent,
-               sloc,
-               eloc,
+               hd.startLoc,
+               hd.endLoc,
                depth,
              )
           ++ "\n";
@@ -267,29 +274,27 @@ let rec astToString = (str, ast: ast, depth) =>
       }
     | [hd, ...tl] =>
       if (str == "[\n") {
-        let (sloc, eloc) = hd.location;
         let el =
           renderNode(
             hd.element,
             hd.children,
             hd.textContent,
-            sloc,
-            eloc,
+            hd.startLoc,
+            hd.endLoc,
             depth,
           )
           ++ ",\n";
         let next = str ++ el;
         astToString(next, tl, depth);
       } else {
-        let (sloc, eloc) = hd.location;
         let el =
           "\n"
           ++ renderNode(
                hd.element,
                hd.children,
                hd.textContent,
-               sloc,
-               eloc,
+               hd.startLoc,
+               hd.endLoc,
                depth,
              )
           ++ ",\n";
