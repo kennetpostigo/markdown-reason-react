@@ -22,14 +22,15 @@ let parseCode = line =>
     InlineCode;
   };
 
-let getPeriodSubStr = str => {
-  let index = Utils.stringIndex("List", ((-1), (-1)), str, '.', false);
-
-  /* TODO: Should stringSub be set to fail? */
-  index == (-1) ?
-    "$$$NotFound$$$" :
-    Utils.stringSub("List", ((-1), (-1)), str, 0, index, false);
-};
+let getPeriodSubStr = str =>
+  switch (Utils.strIdx("List", ((-1), (-1)), str, '.', false)) {
+  | Some(i) =>
+    switch (Utils.strSub("List", ((-1), (-1)), str, 0, i, false)) {
+    | Some(sub) => sub
+    | None => ""
+    }
+  | None => ""
+  };
 
 let parseList = line =>
   switch (String.sub(line, 0, 2)) {
@@ -90,69 +91,76 @@ let parsePrimitives = line =>
 let getDirectoryFiles = directory => "TODO";
 let iterDirectoryFiles = fn => "TODO";
 
-let parseFileToAST = filename => {
-  let ast: ref(ast) = ref([]);
-  let startLocation = ref(1);
-  let chan = open_in(filename);
+let rec aggregate = (ls, chan, locS, locE, id, idHandler) => {
+  let line = input_line(chan);
+  print_string(line ++ "\n");
+  let nextLocE = locE + 1;
+
+  if (line == id) {
+    (List.rev(ls), idHandler(nextLocE, nextLocE));
+  } else {
+    let next = [line, ...ls];
+    aggregate(next, chan, locS, nextLocE, id, idHandler);
+  };
+};
+
+let rec parseFileToAST = (filename, ast, loc) => {
+  let chan = open_in(filename); /* open file */
+  let line = input_line(chan); /* read line from file */
 
   try (
-    while (true) {
-      let line = input_line(chan);
-      let primitive = parsePrimitives(line);
-
-      switch (primitive) {
-      | Paragraph
-      | Blockquote
-      | Code =>
-        let el =
-          Ast.nodeOfMultilineElements(
-            primitive,
-            chan,
-            line,
-            startLocation^,
-            startLocation^,
-          );
-
-        let (_, finalLocation) = el.location;
-        ast := [el, ...ast^];
-        startLocation := finalLocation + 1;
-      | Link =>
-        let el = Ast.nodeOfLink(line, startLocation^, startLocation^);
-        let (_, finalLocation) = el.location;
-        ast := [el, ...ast^];
-        startLocation := finalLocation + 1;
-      | Image =>
-        let el = Ast.nodeOfImage(line, startLocation^, startLocation^);
-        let (_, finalLocation) = el.location;
-        ast := [el, ...ast^];
-        startLocation := finalLocation + 1;
-      | Footnote =>
-        let el = Ast.nodeOfFootnote(line, startLocation^, startLocation^);
-        let (_, finalLocation) = el.location;
-        ast := [el, ...ast^];
-        startLocation := finalLocation + 1;
-      | List(lt) =>
-        let el =
-          Ast.nodeOfLists(line, chan, [], lt, startLocation^, startLocation^);
-        let (_, finalLocation) = el.location;
-        ast := [el, ...ast^];
-        startLocation := finalLocation + 1;
-      | _ =>
-        ast :=
-          [
-            {
-              element: primitive,
-              children: [],
-              textContent: Some(line),
-              location: (startLocation^, startLocation^),
-            },
-            ...ast^,
-          ];
-        startLocation := startLocation^ + 1;
-      };
+    switch (parsePrimitives(line)) {
+    | Paragraph =>
+      let (content, lastNode) =
+        aggregate([line], chan, loc + 1, loc + 1, "", Ast.nodeOfBreak);
+      let node = Ast.nodeOfParagraph(content, "", loc, loc);
+      parseFileToAST(filename, [lastNode, node, ...ast], lastNode.endLoc);
+    | Blockquote =>
+      let (content, lastNode) =
+        aggregate([line], chan, loc + 1, loc + 1, "", Ast.nodeOfBreak);
+      let node = Ast.nodeOfBlockquote(content, "", loc, loc);
+      parseFileToAST(filename, [lastNode, node, ...ast], lastNode.endLoc);
+    | Heading(int) =>
+      let node = Ast.nodeOfHeading(line, int, loc, loc);
+      parseFileToAST(filename, [node, ...ast], node.endLoc);
+    | Code =>
+      let (content, _) =
+        aggregate([line], chan, loc + 1, loc + 1, "```", (int, int) => ());
+      let node = Ast.nodeOfCode(content, "", loc, loc);
+      parseFileToAST(filename, [node, ...ast], node.endLoc);
+    | List(lt) =>
+      let node = Ast.nodeOfLists(line, [], lt, loc, loc);
+      parseFileToAST(filename, [node, ...ast], node.endLoc);
+    | Link =>
+      let node = Ast.nodeOfLink(line, loc, loc);
+      parseFileToAST(filename, [node, ...ast], node.endLoc);
+    | Image =>
+      let node = Ast.nodeOfImage(line, loc, loc);
+      parseFileToAST(filename, [node, ...ast], node.endLoc);
+    | Footnote =>
+      let node = Ast.nodeOfFootnote(line, loc, loc);
+      parseFileToAST(filename, [node, ...ast], node.endLoc);
+    | Emphasis
+    | Strong
+    | Delete
+    | ThematicBreak
+    | ListItem
+    | InlineCode
+    | Table
+    | TableRow
+    | TableCell
+    | LinkReference
+    | ImageReference
+    | FootnoteReference
+    | Definition
+    | FootnoteDefinition
+    | Break =>
+      let node = Ast.nodeOfBreak(loc, loc);
+      parseFileToAST(filename, [node, ...ast], node.endLoc);
     }
   ) {
-  | End_of_file => close_in(chan)
+  | End_of_file =>
+    close_in(chan);
+    List.rev(ast);
   };
-  List.rev(ast^);
 };
