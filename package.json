@@ -4,8 +4,16 @@
   "description": "markdown to reason react pages",
   "license": "MIT",
   "esy": {
-    "build": [["refmterr", "jbuilder", "build"]],
-    "install": ["esy-installer"],
+    "build": [
+      [
+        "refmterr",
+        "jbuilder",
+        "build"
+      ]
+    ],
+    "install": [
+      "esy-installer"
+    ],
     "buildsInSource": "_build"
   },
   "dependencies": {
@@ -20,6 +28,7 @@
     "@esy-ocaml/reason": "^3.2.0"
   },
   "peerDependencies": {
+    "@esy-ocaml/merlin": "3.0.5",
     "ocaml": "~4.6.1"
   },
   "devDependencies": {

@@ -248,9 +248,9 @@
     ocaml " >= 4.2.3000"
 
 "@opam/ocaml-migrate-parsetree@*":
-  version "1.0.10"
-  uid "48723a85ec73e8dc29f6f8710d1178a4"
-  resolved "@opam/ocaml-migrate-parsetree@1.0.10-48723a85ec73e8dc29f6f8710d1178a4.tgz"
+  version "1.0.11"
+  uid dcb22383e7970b66cc403330660dac46
+  resolved "@opam/ocaml-migrate-parsetree@1.0.11-dcb22383e7970b66cc403330660dac46.tgz"
   dependencies:
     "@esy-ocaml/esy-installer" "^0.0.0"
     "@esy-ocaml/substs" "^0.0.1"
