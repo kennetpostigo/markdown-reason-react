@@ -37,69 +37,66 @@ let astOfFootnote = () =>
     Utils.nodeToString(Ast.nodeOfFootnote("[^some footnote]", 1, 1)),
   );
 
-/* let astOfBlockquote = () => {
-     let chan = open_in("../../../tests/stubs/astBlockquote.md");
-     Alcotest.(check(string))(
-       "Ast.nodeOfBlockquote",
-       {|{
-     element: Blockquote,
-     children: [],
-     textContent: > this is a memorable quote about something.
-   This is the secondLine.,
-     location: (1, 2)
-   }|},
-       Utils.nodeToString(Ast.nodeOfBlockquote(chan, "", 1, 1)),
-     );
-     close_in(chan);
-   };
+let astOfBlockquote = () => {
+  let chan = open_in("../../../tests/stubs/astBlockquote.md");
+  Alcotest.(check(string))(
+    "Ast.nodeOfBlockquote",
+    {|{
+  element: Blockquote,
+  children: [],
+  textContent: > this is a memorable quote about something.
+This is the secondLine.,
+  location: (1, 2)
+}|},
+    Utils.nodeToString(Ast.nodeOfBlockquote(chan, "", 1, 1)),
+  );
+};
 
-   let astOfParagraph = () => {
-     let chan = open_in("../../../tests/stubs/astParagraph.md");
-     Alcotest.(check(string))(
-       "Ast.nodeOfParagraph",
-       {|{
-     element: Paragraph,
-     children: [],
-     textContent: Lorem ipsum dolor sit amet, instructior vituperatoribus pri cu, quaeque
-   albucius quaerendum te vel. Zril tamquam maiestatis nam no, in utamur quaestio
-   scriptorem vim. Tota graeco vel ne, ne vel primis conclusionemque. Mea dicam
-   tritani reformidans te, at sed erant molestie incorrupte. Laudem iisque ea vis,
-   solet veniam dissentiet mea et.,
-     location: (1, 5)
-   }|},
-       Utils.nodeToString(Ast.nodeOfParagraph(chan, "", 1, 1)),
-     );
-     close_in(chan);
-   };
+let astOfParagraph = () => {
+  let chan = open_in("../../../tests/stubs/astParagraph.md");
+  Alcotest.(check(string))(
+    "Ast.nodeOfParagraph",
+    {|{
+  element: Paragraph,
+  children: [],
+  textContent: Lorem ipsum dolor sit amet, instructior vituperatoribus pri cu, quaeque
+albucius quaerendum te vel. Zril tamquam maiestatis nam no, in utamur quaestio
+scriptorem vim. Tota graeco vel ne, ne vel primis conclusionemque. Mea dicam
+tritani reformidans te, at sed erant molestie incorrupte. Laudem iisque ea vis,
+solet veniam dissentiet mea et.,
+  location: (1, 5)
+}|},
+    Utils.nodeToString(Ast.nodeOfParagraph(chan, "", 1, 1)),
+  );
+};
 
-   let astOfCode = () => {
-     let chan = open_in("../../../tests/stubs/astCode.md");
-     Alcotest.(check(string))(
-       "Ast.nodeOfCode",
-       {|{
-     element: Code,
-     children: [],
-     textContent: ```
-   open LwtNode;
+let astOfCode = () => {
+  let chan = open_in("../../../tests/stubs/astCode.md");
+  Alcotest.(check(string))(
+    "Ast.nodeOfCode",
+    {|{
+  element: Code,
+  children: [],
+  textContent: ```
+open LwtNode;
 
-   Node.run({
-     let%lwt myDir = Fs.mkdir("myDir");
-     let%lwt myDir2 = Fs.mkdir("myDir2");
-     Node.resolved();
-   });
-   ```,
-     location: (1, 9)
-   }|},
-       Utils.nodeToString(Ast.nodeOfCode(chan, "", 1, 1)),
-     );
-     close_in(chan);
-   }; */
+Node.run({
+  let%lwt myDir = Fs.mkdir("myDir");
+  let%lwt myDir2 = Fs.mkdir("myDir2");
+  Node.resolved();
+});
+```,
+  location: (1, 9)
+}|},
+    Utils.nodeToString(Ast.nodeOfCode(chan, "", 1, 1)),
+  );
+};
 
 let tests = [
   ("Ast.nodeOfLink", `Slow, astOfLink),
   ("Ast.nodeOfImage", `Slow, astOfImage),
   ("Ast.nodeOfFootnote", `Slow, astOfFootnote),
-  /* ("Ast.nodeOfBlockquote", `Slow, astOfBlockquote),
-     ("Ast.nodeOfParagraph", `Slow, astOfParagraph),
-     ("Ast.nodeOfCode", `Slow, astOfCode), */
+  ("Ast.nodeOfBlockquote", `Slow, astOfBlockquote),
+  ("Ast.nodeOfParagraph", `Slow, astOfParagraph),
+  ("Ast.nodeOfCode", `Slow, astOfCode),
 ];

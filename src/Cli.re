@@ -34,14 +34,14 @@ let () = {
     Codegen.pipePageToFile(
       "sample/readme.md",
       Codegen.generateCodeFromAST(
-        Parser.parseFileToAST("sample/readme.md", [], 1),
+        Parser.parseFileToAST("sample/readme.md"),
         "",
       ),
     ) :
     Codegen.pipePageToFile(
       "sample/readme.md",
       Codegen.generateCodeFromAST(
-        Parser.parseFileToAST("sample/readme.md", [], 1),
+        Parser.parseFileToAST("sample/readme.md"),
         "",
       ),
     );

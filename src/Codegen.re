@@ -24,7 +24,7 @@ let getRawTextContent = tc =>
 
 let rec renderElement = (node: element) =>
   Parser.(
-    switch ((node.element: primitive)) {
+    switch ((node.element: primitives)) {
     | Heading(1) => "<h1>" ++ getTextContent(node.textContent) ++ "</h1>\n"
     | Heading(2) => "<h2>" ++ getTextContent(node.textContent) ++ "</h2>\n"
     | Heading(3) => "<h3>" ++ getTextContent(node.textContent) ++ "</h3>\n"
