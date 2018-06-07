@@ -2,6 +2,20 @@ open Types;
 
 exception MalformedMarkdown(string);
 
+let rec getIndent = (count, str) =>
+  switch (str) {
+  | "" => count
+  | " " => getIndent(count + 1, "")
+  | _ =>
+    switch (String.index(str, ' ')) {
+    | i =>
+      i != 0 ?
+        getIndent(count, "") :
+        getIndent(count + 1, String.sub(str, 1, String.length(str) - 1))
+    | exception Not_found => getIndent(count, "")
+    }
+  };
+
 let primitiveToString = t =>
   switch (t) {
   | Paragraph => "Paragraph"
@@ -30,6 +44,7 @@ let primitiveToString = t =>
   | FootnoteDefinition => "FootnoteDefinition"
   };
 
+/* TODO: convert to option */
 let stringIndex = (prmtv, (sl, el), str, ch, fail) =>
   switch (String.index(str, ch)) {
   | i => i
@@ -56,6 +71,7 @@ let stringIndex = (prmtv, (sl, el), str, ch, fail) =>
       (-1)
   };
 
+/* TODO: convert to option */
 let stringIndexFrom = (prmtv, (sl, el), str, index, ch, fail) =>
   switch (String.index_from(str, index, ch)) {
   | i => i
@@ -82,6 +98,7 @@ let stringIndexFrom = (prmtv, (sl, el), str, index, ch, fail) =>
       (-1)
   };
 
+/* TODO: convert to option */
 let stringSub = (prmtv, (sl, el), str, ss, se, fail) =>
   switch (String.sub(str, ss, se)) {
   | i => i
@@ -108,3 +125,29 @@ let hasTextContent = tc =>
   | Some(s) => s
   | None => "None"
   };
+
+let nodeToString = (element: element) => {
+  let (locS, locE) = element.location;
+  addSpace(0)
+  ++ "{\n"
+  ++ addSpace(2)
+  ++ "element: "
+  ++ primitiveToString(element.element)
+  ++ ",\n"
+  ++ addSpace(2)
+  ++ "children: []"
+  ++ ",\n"
+  ++ addSpace(0 + 2)
+  ++ "textContent: "
+  ++ hasTextContent(element.textContent)
+  ++ ",\n"
+  ++ addSpace(2)
+  ++ "location: ("
+  ++ string_of_int(locS)
+  ++ ", "
+  ++ string_of_int(locE)
+  ++ ")"
+  ++ "\n"
+  ++ addSpace(0)
+  ++ "}";
+};

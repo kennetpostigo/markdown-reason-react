@@ -35,15 +35,12 @@ let rec nodeOfLink = (line, locS, locE) => {
       true,
     );
 
-  (
-    {
-      element: Link,
-      children: [],
-      textContent: Some(title ++ " " ++ link),
-      location: (locS, locE),
-    },
-    locE,
-  );
+  {
+    element: Link,
+    children: [],
+    textContent: Some(title ++ " " ++ link),
+    location: (locS, locE),
+  };
 };
 
 let nodeOfImage = (line, locS, locE) => {
@@ -81,15 +78,12 @@ let nodeOfImage = (line, locS, locE) => {
       true,
     );
 
-  (
-    {
-      element: Image,
-      children: [],
-      textContent: Some(alt ++ " " ++ link),
-      location: (locS, locE),
-    },
-    locE,
-  );
+  {
+    element: Image,
+    children: [],
+    textContent: Some(alt ++ " " ++ link),
+    location: (locS, locE),
+  };
 };
 
 let rec nodeOfFootnote = (line, locS, locE) => {
@@ -113,60 +107,131 @@ let rec nodeOfFootnote = (line, locS, locE) => {
       txtEnd - txtStart - 1,
       true,
     );
-  (
-    {
-      element: Footnote,
-      children: [],
-      textContent: Some(txt),
-      location: (locS, locE),
-    },
-    locE,
-  );
+
+  {
+    element: Footnote,
+    children: [],
+    textContent: Some(txt),
+    location: (locS, locE),
+  };
 };
 
-let rec nodeOfLists =
-        (start, chan, accumulatedList, listType, lineStart, lineEnd) => {
-  let next = start != "$$$" ? start : input_line(chan);
-  if (next == "") {
-    (
-      {
-        element: List(listType),
-        children: List.rev(accumulatedList),
-        textContent: None,
-        location: (lineStart, lineEnd),
-      },
-      lineEnd + 1,
-    );
+let rec nodeOfBlockquote = (chan, str, lineS, lineE) => {
+  let next =
+    switch (input_line(chan)) {
+    | s => s
+    | exception End_of_file => "$$$EndOFFile$$$"
+    };
+
+  if (next == "$$$EndOFFile$$$") {
+    {
+      element: Blockquote,
+      children: [],
+      textContent: Some(str),
+      location: (lineS, lineE),
+    };
   } else {
+    let nextEnd = str == "" && lineE == 1 ? 1 : lineE + 1;
+    let nextStr = str ++ (str == "" ? "" : "\n") ++ next;
+    nodeOfBlockquote(chan, nextStr, lineS, nextEnd);
+  };
+};
+
+let rec nodeOfParagraph = (chan, str, lineS, lineE) => {
+  let next =
+    switch (input_line(chan)) {
+    | s => s
+    | exception End_of_file => "$$$EndOFFile$$$"
+    };
+
+  if (next == "$$$EndOFFile$$$") {
+    {
+      element: Paragraph,
+      children: [],
+      textContent: Some(str),
+      location: (lineS, lineE),
+    };
+  } else {
+    let nextEnd = str == "" && lineE == 1 ? 1 : lineE + 1;
+    let nextStr = str ++ (str == "" ? "" : "\n") ++ next;
+    nodeOfParagraph(chan, nextStr, lineS, nextEnd);
+  };
+};
+
+let rec nodeOfCode = (chan, str, lineS, lineE) => {
+  let next =
+    switch (input_line(chan)) {
+    | s => s
+    | exception End_of_file => "$$$EndOFFile$$$"
+    };
+
+  if (next == "$$$EndOFFile$$$") {
+    {
+      element: Code,
+      children: [],
+      textContent: Some(str),
+      location: (lineS, lineE),
+    };
+  } else {
+    let nextEnd = str == "" && lineE == 1 ? 1 : lineE + 1;
+    let nextStr = str ++ (str == "" ? "" : "\n") ++ next;
+    nodeOfCode(chan, nextStr, lineS, nextEnd);
+  };
+};
+
+let getListType = line =>
+  switch (String.sub(String.trim(line), 0, 2)) {
+  | "* "
+  | "- "
+  | "+ " => Unordered
+  | _ => Ordered
+  };
+
+/*
+  How to create AST for potentially infinitely nested lists
+   1. If indent is equal then add the element as a ListItem into the accumulatedList
+   2. If indent is greater recurse creating a new List with it's children inside, then add that       list as an element to the accumulatedList.
+   3. If indent is lesser
+ */
+let rec nodeOfLists = (start, chan, list, listType, lineS, lineE) => {
+  print_string("next: " ++ start ++ "\n");
+  if (start == "") {
+    print_string("HIT next == empty\n");
+    {
+      element: List(listType),
+      children: List.rev(list),
+      textContent: None,
+      location: (lineS, lineE - 1),
+    };
+  } else {
+    print_string("HIT else\n");
     let nextList = [
       {
         element: ListItem,
         children: [],
-        textContent: Some(next),
-        location: (lineEnd, lineEnd),
+        textContent: Some(start),
+        location: (lineE, lineE),
       },
-      ...accumulatedList,
+      ...list,
     ];
-    nodeOfLists("$$$", chan, nextList, listType, lineStart, lineEnd + 1);
+
+    let line = input_line(chan);
+    nodeOfLists(line, chan, nextList, listType, lineS, lineE + 1);
   };
 };
 
-let rec nodeOfMultilineElements =
-        (prmtv, chan, accumulatedStr, lineStart, lineEnd) => {
+let rec nodeOfMultilineElements = (prmtv, chan, str, lineS, lineE) => {
   let next = input_line(chan);
   if (next == (prmtv == Code ? "```" : "")) {
-    (
-      {
-        element: prmtv,
-        children: [],
-        textContent: Some(accumulatedStr),
-        location: (lineStart, lineEnd),
-      },
-      lineEnd + 1,
-    );
+    {
+      element: prmtv,
+      children: [],
+      textContent: Some(str),
+      location: (lineS, lineE),
+    };
   } else {
-    let nextStr = accumulatedStr ++ "\n" ++ next;
-    nodeOfMultilineElements(prmtv, chan, nextStr, lineStart, lineEnd + 1);
+    let nextStr = str ++ "\n" ++ next;
+    nodeOfMultilineElements(prmtv, chan, nextStr, lineS, lineE + 1);
   };
 };
 

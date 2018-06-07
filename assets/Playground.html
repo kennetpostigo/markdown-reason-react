@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<!-- saved from url=(0503)http://reason.surge.sh/?syntax=Reason&code=DYUwLgBATiDGEHNwEkB2ATErIF4IApYB7AV2wBoIBnMKASghwD4AoCagdwEsxYALAjXoQA3mwgAfCACJpjVu3YAHKF2wB9IWoT5pACR4QAogFslYAJ4QAtDIgBqe9Vrb1RAGbq1YQqWwNHOzlAoToAbnF2YjIwCPYpOTlmRBQMLB9o7AcIAEZKWTpxKXV5SM4efgIAZRdUBAA6NUwAD3whSgByCA66BjFFSQguUoHlVQ0tOt0DSGHbYKdJhDdPb18YgKdEh0XacLL2YYBCPAAGCAB+FLA0TGx1ihlpBgAua9v0h8gnPIga8YaVBIACM2rRKL8cr04oopCBmrAQOYuERUBAAHJEMDqdx+dAjUYqbyaWo6fSGTHY3FkfHzHbOAErLz3TJgTZBemhGEDJA3NIsvxgfLPbkQAC+4jFERYACkqPVgEQdLyPvdTvkBs9wkA&canvas=200 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Playground</title>
+<style>
+  #main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+  }
+  .result .result-highlighted {
+  color: #9e009e!important;
+  font-weight: 400;
+}
+
+.result .breadcrumb{
+  color: #5a5a5a;
+  font-size: .8em;
+}
+
+.result h4.item {
+  border-top: none;
+}
+
+.result {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+}
+</style>
+<script>
+  window.examplesData = [
+    {title: "Hello world", code: 'Js.log("Hello world");'}
+  ]
+  window.complationData = []
+</script>
+<script defer="" src="./Playground_files/bucklescript-stdlib-completion.js"></script>
+<script defer="" src="./Playground_files/completion-data.js"></script>
+<script src="./Playground_files/playground-examples.js"></script>
+
+<script src="./Playground_files/codemirror.js"></script>
+<script src="./Playground_files/comment.js"></script>
+<script src="./Playground_files/simple.js"></script>
+<script src="./Playground_files/rust.js"></script>
+<script src="./Playground_files/closebrackets.js"></script>
+<script src="./Playground_files/matchbrackets.js"></script>
+<script src="./Playground_files/show-hint.js"></script>
+<link rel="stylesheet" href="./Playground_files/show-hint.css">
+<link rel="stylesheet" href="./Playground_files/codemirror.css">
+
+<script src="./Playground_files/bucklescript.js"></script>
+<script src="./Playground_files/refmt.js"></script>
+<script src="./Playground_files/colors.js"></script>
+<script src="./Playground_files/bucklescript-deps.js"></script>
+<script src="./Playground_files/searchables.json.index.js"></script>
+<script src="./Playground_files/elasticlunr.js"></script>
+<link href="./Playground_files/styles.css" rel="stylesheet">
+<script>
+  window.process = {
+    env: {
+      NODE_ENV: 'development'
+    }
+  }
+</script>
+<style type="text/css" data-glamor="">body{font-family:system-ui, sans-serif;}.css-5kl1v7,[data-css-5kl1v7]{white-space:nowrap;left:0px;display:none;top:100%;position:absolute;}.css-1qkp06e,[data-css-1qkp06e]{position:relative;}.css-1qkp06e:hover .css-5kl1v7,[data-css-1qkp06e]:hover .css-5kl1v7{z-index:1000;background-color:#FFFFFF;display:block;}.css-15bygeh,[data-css-15bygeh]{padding:8px;}.css-15bygeh:hover,[data-css-15bygeh]:hover,.css-15bygeh[data-simulate-hover],[data-css-15bygeh][data-simulate-hover]{background-color:#eee;}.css-stkg9i,[data-css-stkg9i]{cursor:pointer;padding:16px;}.css-stkg9i:hover,[data-css-stkg9i]:hover,.css-stkg9i[data-simulate-hover],[data-css-stkg9i][data-simulate-hover]{background-color:#eee;}.CodeMirror{flex:1;height:auto;-webkit-flex:1;}.css-1y16c93,[data-css-1y16c93]{padding:16px;}.css-1hhwv8a,[data-css-1hhwv8a]{flex-direction:row;display:-webkit-box; display: -moz-box; display: -ms-flexbox; display: -webkit-flex; display: flex;flex:1;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-webkit-flex-direction:row;-webkit-flex:1;}.css-3wr0ji,[data-css-3wr0ji]{flex-direction:column;display:-webkit-box; display: -moz-box; display: -ms-flexbox; display: -webkit-flex; display: flex;position:relative;flex:1;-webkit-box-orient:vertical;-webkit-box-direction:normal;-webkit-flex-direction:column;-webkit-flex:1;}.css-valr9g,[data-css-valr9g]{padding:16px;box-shadow:0 0 3px 0 #aaa ;z-index:10;overflow:auto;min-width:300px;align-items:center;flex-direction:column;display:-webkit-box; display: -moz-box; display: -ms-flexbox; display: -webkit-flex; display: flex;position:relative;-webkit-box-align:center;-webkit-align-items:center;-webkit-box-orient:vertical;-webkit-box-direction:normal;-webkit-flex-direction:column;}.css-zsmt26,[data-css-zsmt26]{background-color:#FFFFFF;z-index:10;right:0px;bottom:0px;position:absolute;border:4px solid #faa;padding:8px;font-family:monospace;white-space:pre-wrap;}.css-139cg2,[data-css-139cg2]{background-color:#fee;border-bottom:1px dashed #FF0000;}.css-ihcy7h,[data-css-ihcy7h]{padding:4px 8px;flex-direction:row;align-items:center;display:-webkit-box; display: -moz-box; display: -ms-flexbox; display: -webkit-flex; display: flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-webkit-flex-direction:row;-webkit-box-align:center;-webkit-align-items:center;}.css-1kdyhg1,[data-css-1kdyhg1]{margin:16px;box-shadow:0px 1px 5px 0 #aaa ;}.css-4tcm3o,[data-css-4tcm3o]{align-self:stretch;height:1px;margin:8px 0;background-color:#aaa;-webkit-align-self:stretch;}.css-2ksgpv,[data-css-2ksgpv]{cursor:pointer;padding:8px 16px;border-style:none;box-shadow:0 0 3px 0 #aaa ;background-color:#FFFFFF;}.css-2ksgpv:disabled,[data-css-2ksgpv]:disabled,.css-2ksgpv[data-simulate-disabled],[data-css-2ksgpv][data-simulate-disabled]{background-color:#eee;cursor:default;}.css-n9fe5c,[data-css-n9fe5c]{flex:1;-webkit-flex:1;}.css-1hra2o0,[data-css-1hra2o0]{align-self:stretch;position:relative;-webkit-align-self:stretch;}.css-8mw401,[data-css-8mw401]{box-sizing:border-box;width:100%;border-style:none;padding:8px 16px;border:1px solid #ccc;}.css-ix7dhk,[data-css-ix7dhk]{text-align:center;line-height:1.1;font-size:30px;}.css-1vqyr9a,[data-css-1vqyr9a]{width:40px;}.css-1qxtbtv,[data-css-1qxtbtv]{box-shadow:0 0 3px 0 #aaa ;margin:8px 0;padding:4px 8px;}.css-exrbgp,[data-css-exrbgp]{width:100%;position:relative;max-height:200px;overflow:auto;min-height:100px;padding:8px;word-break:break-all;white-space:pre-wrap;}.css-z5hdsv,[data-css-z5hdsv]{right:10px;cursor:pointer;z-index:100;top:5px;position:absolute;}.css-15cdsm9,[data-css-15cdsm9]{margin-top:16px;width:100%;align-self:stretch;-webkit-align-self:stretch;}.css-7bnwue,[data-css-7bnwue]{z-index:1000;box-shadow:0 0 3px 0 #aaa ;background-color:#FFFFFF;padding:8px 16px;right:0px;left:0px;bottom:0px;overflow:auto;max-height:400px;}.css-gkv6pa,[data-css-gkv6pa]{padding:4px;border-top:1px solid #eee;overflow:auto;word-break:break-all;background-color:#FFFFFF;}.css-12s72xr,[data-css-12s72xr]{padding:4px;border-top:1px solid #eee;overflow:auto;word-break:break-all;background-color:#faa;}</style></head><body>
+  <div id="main"><div class="css-1hhwv8a"><div class="css-3wr0ji"><div class="css-ihcy7h"><div class="css-1qkp06e"><div class="css-15bygeh">Examples ▾</div><div class="css-5kl1v7"><div class="css-stkg9i">Hello world</div><div class="css-stkg9i">Stateless component</div></div></div><div class="css-n9fe5c"></div><button class="css-2ksgpv">Run</button><div style="flex-basis: 8px;"></div><button class="css-2ksgpv">Auto Format</button><div style="flex-basis: 8px;"></div>Syntax:<div style="flex-basis: 8px;"></div><button class="css-2ksgpv">OCaml</button><button class="css-2ksgpv" disabled="">Reason</button><input style="visibility: hidden; width: 0px;"><button class="css-2ksgpv">Copy permalink</button></div><textarea style="display: none;">let str = ReasonReact.stringToElement;
+
+let root = &lt;div&gt; (str("Hello playground")) &lt;/div&gt;;
+
+ReactDOMRe.renderToElementWithId(root, "target");</textarea><div class="CodeMirror cm-s-default CodeMirror-wrap CodeMirror-focused"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 224px; left: 341px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;" tabindex="0"></textarea></div><div class="CodeMirror-vscrollbar" cm-not-content="true" style="width: 18px; pointer-events: none;"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-hscrollbar" cm-not-content="true" style="height: 18px; pointer-events: none;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 30px; margin-bottom: 0px; border-right-width: 30px; min-height: 404px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre>x</pre><div class="CodeMirror-linenumber CodeMirror-gutter-elt"><div>16</div></div></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-cursors" style=""><div class="CodeMirror-cursor" style="left: 311px; top: 220px; height: 22px;">&nbsp;</div></div><div class="CodeMirror-code" role="presentation" style=""><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -30px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">1</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">let</span> <span class="cm-def">rec</span> <span class="cm-variable">getIndent</span> <span class="cm-operator">=</span> (<span class="cm-variable">count</span>, <span class="cm-atom">str</span>) <span class="cm-operator">=&gt;</span></span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -30px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">2</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;<span class="cm-variable">switch</span> (<span class="cm-atom">str</span>) {</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -30px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">3</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">  | <span class="cm-string">""</span> <span class="cm-operator">=&gt;</span></span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -30px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">4</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">print_string</span>(<span class="cm-string">"Hit Empty - "</span> <span class="cm-operator">++</span> <span class="cm-variable">string_of_int</span>(<span class="cm-variable">count</span>) <span class="cm-operator">++</span> <span class="cm-string">" "</span> <span class="cm-operator">++</span> <span class="cm-atom">str</span>);</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -30px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">5</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">count</span>;</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -30px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">6</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">  | <span class="cm-string">" "</span> <span class="cm-operator">=&gt;</span> <span class="cm-variable">getIndent</span>(<span class="cm-variable">count</span> <span class="cm-operator">+</span> <span class="cm-number">1</span>, <span class="cm-string">""</span>)</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -30px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">7</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">  | <span class="cm-variable">_</span> <span class="cm-operator">=&gt;</span></span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -30px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">8</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">switch</span> (<span class="cm-variable">String</span>.<span class="cm-variable">index</span>(<span class="cm-atom">str</span>, <span class="cm-string-2">' '</span>)) {</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -30px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">9</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  | <span class="cm-variable">i</span> <span class="cm-operator">=&gt;</span></span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -30px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">10</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp;<span class="cm-variable">print_string</span>(<span class="cm-string">"Hit i - "</span> <span class="cm-operator">++</span> <span class="cm-variable">string_of_int</span>(<span class="cm-variable">count</span>) <span class="cm-operator">++</span> <span class="cm-string">" "</span> <span class="cm-operator">++</span> <span class="cm-atom">str</span>);</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -30px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">11</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp;<span class="cm-variable">i</span> <span class="cm-operator">!=</span> <span class="cm-number">0</span> ? <span class="cm-variable">getIndent</span>(<span class="cm-variable">count</span> <span class="cm-operator">+</span> <span class="cm-number">1</span>, <span class="cm-string">""</span>) : <span class="cm-variable">getIndent</span>(<span class="cm-variable">count</span> <span class="cm-operator">+</span> <span class="cm-number">1</span>, <span class="cm-variable">String</span>.<span class="cm-variable">sub</span>(<span class="cm-atom">str</span>, <span class="cm-number">1</span>, <span class="cm-number">1</span>));</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -30px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">12</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  | <span class="cm-variable">exception</span> <span class="cm-variable">Not_found</span> <span class="cm-operator">=&gt;</span></span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -30px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">13</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp;<span class="cm-variable">print_string</span>(<span class="cm-string">"Hit Not_found - "</span> <span class="cm-operator">++</span> <span class="cm-variable">string_of_int</span>(<span class="cm-variable">count</span>) <span class="cm-operator">++</span> <span class="cm-string">" "</span> <span class="cm-operator">++</span> <span class="cm-atom">str</span>);</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -30px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">14</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp;<span class="cm-variable">getIndent</span>(<span class="cm-variable">count</span>, <span class="cm-string">""</span>);</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -30px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">15</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  }</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -30px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">16</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">  };</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -30px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">17</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -30px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">18</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">Js</span>.<span class="cm-variable">log</span>(<span class="cm-variable">getIndent</span>(<span class="cm-number">0</span>, <span class="cm-string">""</span>));</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; border-bottom: 0px solid transparent; top: 404px;"></div><div class="CodeMirror-gutters" style="height: 434px; left: 0px;"><div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 29px;"></div></div></div></div></div><div class="css-valr9g" style="width: 200px;"><div class="css-1hra2o0"><input class="css-8mw401" placeholder="Search the docs inline" value=""></div><div><h1 class="css-ix7dhk">Welcome to the Playground!</h1>Press ctrl+enter or cmd+enter to evaluate</div><div class="css-4tcm3o"></div><div>A<input class="css-1vqyr9a" type="number" value="200">x 200 canvas w/ id #canvas</div><canvas class="css-1kdyhg1" id="canvas" height="200px" width="200px"></canvas><div class="css-4tcm3o"></div><div>A div w/ id #target</div><div class="css-1qxtbtv"><div id="target">Render to #target to replace this content</div></div><div class="css-4tcm3o"></div>The Javascript Output<pre class="css-exrbgp"><div class="css-z5hdsv">⇱</div><code>// Generated by BUCKLESCRIPT VERSION 3.0.0, PLEASE EDIT WITH CARE
+'use strict';
+
+var $$String = require("stdlib/string");
+var Pervasives = require("stdlib/pervasives");
+var Caml_builtin_exceptions = require("stdlib/caml_builtin_exceptions");
+
+function getIndent(_count, _str) {
+  while(true) {
+    var str = _str;
+    var count = _count;
+    switch (str) {
+      case "" : 
+          Pervasives.print_string("Hit Empty - " + (String(count) + (" " + str)));
+          return count;
+      case " " : 
+          _str = "";
+          _count = count + 1 | 0;
+          continue ;
+      default:
+        var exit = 0;
+        var i;
+        try {
+          i = $$String.index(str, /* " " */32);
+          exit = 1;
+        }
+        catch (exn){
+          if (exn === Caml_builtin_exceptions.not_found) {
+            Pervasives.print_string("Hit Not_found - " + (String(count) + (" " + str)));
+            _str = "";
+            continue ;
+          } else {
+            throw exn;
+          }
+        }
+        if (exit === 1) {
+          Pervasives.print_string("Hit i - " + (String(count) + (" " + str)));
+          var match = i !== 0;
+          if (match) {
+            _str = "";
+            continue ;
+          } else {
+            _str = $$String.sub(str, 1, 1);
+            _count = count + 1 | 0;
+            continue ;
+          }
+        }
+        
+    }
+  };
+}
+
+console.log(getIndent(0, "    "));
+
+exports.getIndent = getIndent;
+/*  Not a pure module */
+</code></pre><div class="css-4tcm3o"></div>Log output<div class="css-15cdsm9"><div class="css-gkv6pa">2</div></div></div></div></div>
+  <script src="./Playground_files/playground.js"></script><div style="position: absolute; display: none; left: 747px; top: 296px; font-family: iosevka, &quot;sf pro mono&quot;, monospace; white-space: pre-wrap; font-size: 12px; line-height: 1.2; padding: 4px 8px; z-index: 1000; background-color: white; box-shadow: rgb(170, 170, 170) 0px 0px 2px;">let sub: (string, int, int) =&gt; string</div>
+  <script src="./Playground_files/all-deps.js"></script>
+</body></html>

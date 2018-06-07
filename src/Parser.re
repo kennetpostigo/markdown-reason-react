@@ -22,6 +22,15 @@ let parseCode = line =>
     InlineCode;
   };
 
+let getPeriodSubStr = str => {
+  let index = Utils.stringIndex("List", ((-1), (-1)), str, '.', false);
+
+  /* TODO: Should stringSub be set to fail? */
+  index == (-1) ?
+    "$$$NotFound$$$" :
+    Utils.stringSub("List", ((-1), (-1)), str, 0, index, false);
+};
+
 let parseList = line =>
   switch (String.sub(line, 0, 2)) {
   | "* "
@@ -30,12 +39,8 @@ let parseList = line =>
   | _ =>
     try (
       {
-        let _x = int_of_string(String.sub(line, 0, 1));
-        if (String.sub(line, 1, 1) == ".") {
-          List(Ordered);
-        } else {
-          Paragraph;
-        };
+        let _x = int_of_string(String.trim(getPeriodSubStr(line)));
+        List(Ordered);
       }
     ) {
     | Failure(_) => Paragraph
@@ -46,6 +51,12 @@ let parseLinkFootnote = line =>
   switch (String.sub(line, 1, 1)) {
   | "^" => Footnote
   | _ => Link
+  };
+
+let parseImage = line =>
+  switch (String.sub(line, 0, 2)) {
+  | "![" => Image
+  | _ => Paragraph
   };
 
 let parsePrimitives = line =>
@@ -67,7 +78,7 @@ let parsePrimitives = line =>
   | "-"
   | "+" => parseList(line)
   | "[" => parseLinkFootnote(line)
-  | "!" => Image
+  | "!" => parseImage(line)
   /* | "***" => ThematicBreak */
   /* | "_" => Emphasis
      | "__" => Strong
@@ -93,7 +104,7 @@ let parseFileToAST = filename => {
       | Paragraph
       | Blockquote
       | Code =>
-        let (el, finalLocation) =
+        let el =
           Ast.nodeOfMultilineElements(
             primitive,
             chan,
@@ -101,26 +112,29 @@ let parseFileToAST = filename => {
             startLocation^,
             startLocation^,
           );
+
+        let (_, finalLocation) = el.location;
         ast := [el, ...ast^];
         startLocation := finalLocation + 1;
       | Link =>
-        let (el, finalLocation) =
-          Ast.nodeOfLink(line, startLocation^, startLocation^);
+        let el = Ast.nodeOfLink(line, startLocation^, startLocation^);
+        let (_, finalLocation) = el.location;
         ast := [el, ...ast^];
         startLocation := finalLocation + 1;
       | Image =>
-        let (el, finalLocation) =
-          Ast.nodeOfImage(line, startLocation^, startLocation^);
+        let el = Ast.nodeOfImage(line, startLocation^, startLocation^);
+        let (_, finalLocation) = el.location;
         ast := [el, ...ast^];
         startLocation := finalLocation + 1;
       | Footnote =>
-        let (el, finalLocation) =
-          Ast.nodeOfFootnote(line, startLocation^, startLocation^);
+        let el = Ast.nodeOfFootnote(line, startLocation^, startLocation^);
+        let (_, finalLocation) = el.location;
         ast := [el, ...ast^];
         startLocation := finalLocation + 1;
       | List(lt) =>
-        let (el, finalLocation) =
+        let el =
           Ast.nodeOfLists(line, chan, [], lt, startLocation^, startLocation^);
+        let (_, finalLocation) = el.location;
         ast := [el, ...ast^];
         startLocation := finalLocation + 1;
       | _ =>
