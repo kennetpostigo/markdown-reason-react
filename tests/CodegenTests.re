@@ -42,9 +42,11 @@ let renderElementHeading1 = () =>
     "<h1>\n(ReasonReact.string({|# Hello World|}))\n</h1>\n",
     Codegen.renderElement({
       element: Heading(1),
+      startLoc: 1,
+      endLoc: 1,
+      nestRule: [],
       children: [],
       textContent: Some("# Hello World"),
-      location: (1, 1),
     }),
   );
 
@@ -54,9 +56,11 @@ let renderElementHeading2 = () =>
     "<h2>\n(ReasonReact.string({|## Hello World|}))\n</h2>\n",
     Codegen.renderElement({
       element: Heading(2),
+      startLoc: 1,
+      endLoc: 1,
+      nestRule: [],
       children: [],
       textContent: Some("## Hello World"),
-      location: (1, 1),
     }),
   );
 
@@ -66,9 +70,11 @@ let renderElementHeading3 = () =>
     "<h3>\n(ReasonReact.string({|### Hello World|}))\n</h3>\n",
     Codegen.renderElement({
       element: Heading(3),
+      startLoc: 1,
+      endLoc: 1,
+      nestRule: [],
       children: [],
       textContent: Some("### Hello World"),
-      location: (1, 1),
     }),
   );
 
@@ -78,9 +84,11 @@ let renderElementHeading4 = () =>
     "<h4>\n(ReasonReact.string({|#### Hello World|}))\n</h4>\n",
     Codegen.renderElement({
       element: Heading(4),
+      startLoc: 1,
+      endLoc: 1,
+      nestRule: [],
       children: [],
       textContent: Some("#### Hello World"),
-      location: (1, 1),
     }),
   );
 
@@ -90,9 +98,11 @@ let renderElementHeading5 = () =>
     "<h5>\n(ReasonReact.string({|##### Hello World|}))\n</h5>\n",
     Codegen.renderElement({
       element: Heading(5),
+      startLoc: 1,
+      endLoc: 1,
+      nestRule: [],
       children: [],
       textContent: Some("##### Hello World"),
-      location: (1, 1),
     }),
   );
 
@@ -102,9 +112,11 @@ let renderElementHeading6 = () =>
     "<h6>\n(ReasonReact.string({|###### Hello World|}))\n</h6>\n",
     Codegen.renderElement({
       element: Heading(6),
+      startLoc: 1,
+      endLoc: 1,
+      nestRule: [],
       children: [],
       textContent: Some("###### Hello World"),
-      location: (1, 1),
     }),
   );
 
@@ -114,9 +126,11 @@ let renderElementBlockquote = () =>
     "<blockquote>\n(ReasonReact.string({|> Hello World|}))\n</blockquote>\n",
     Codegen.renderElement({
       element: Blockquote,
+      startLoc: 1,
+      endLoc: 1,
+      nestRule: [],
       children: [],
       textContent: Some("> Hello World"),
-      location: (1, 1),
     }),
   );
 
@@ -126,9 +140,11 @@ let renderElementCode = () =>
     "<pre>\n<code>\n(ReasonReact.string({|```\n Hello World\n```|}))\n</code>\n</pre>\n",
     Codegen.renderElement({
       element: Code,
+      startLoc: 1,
+      endLoc: 3,
+      nestRule: [],
       children: [],
       textContent: Some("```\n Hello World\n```"),
-      location: (1, 3),
     }),
   );
 
@@ -138,9 +154,11 @@ let renderElementLink = () =>
     "<a href=\"https://lol.to\" title=\"shit\">\n(ReasonReact.string({|home|}))\n</a>\n",
     Codegen.renderElement({
       element: Link,
+      startLoc: 1,
+      endLoc: 1,
+      nestRule: [],
       children: [],
       textContent: Some("home https://lol.to shit"),
-      location: (1, 1),
     }),
   );
 
@@ -150,9 +168,11 @@ let renderElementImage = () =>
     "<img src=\"https://whale.to\" alt=\"whale\" />\n",
     Codegen.renderElement({
       element: Image,
+      startLoc: 1,
+      endLoc: 1,
+      nestRule: [],
       children: [],
       textContent: Some("whale https://whale.to"),
-      location: (1, 1),
     }),
   );
 
@@ -162,9 +182,11 @@ let renderElementFootnote = () =>
     "<sup>\n(ReasonReact.string({|Hello World|}))\n</sup>\n",
     Codegen.renderElement({
       element: Footnote,
+      startLoc: 1,
+      endLoc: 1,
+      nestRule: [],
       children: [],
       textContent: Some("Hello World"),
-      location: (1, 1),
     }),
   );
 

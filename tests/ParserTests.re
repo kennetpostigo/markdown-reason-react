@@ -22,6 +22,20 @@ let getTripleDigitPeriod = () =>
     Parser.getPeriodSubStr("101. ...lol"),
   );
 
+let getPeriodOfEmpty = () =>
+  Alcotest.(check(string))(
+    "Parser.getPeriodSubStr on nothing",
+    "",
+    Parser.getPeriodSubStr(""),
+  );
+
+let getPeriodOfPeriodlessString = () =>
+  Alcotest.(check(string))(
+    "Parser.getPeriodSubStr on string with no period",
+    "",
+    Parser.getPeriodSubStr("155"),
+  );
+
 let parseHeading1 = () =>
   Alcotest.(check(string))(
     "Parser.parseHeading a markdown header 1",
@@ -116,10 +130,33 @@ let parseFootnote = () =>
     ),
   );
 
+let parserAggregate = () => {
+  let chan = open_in("../../../tests/stubs/parserAggregate.md");
+  let (content, _) = Parser.aggregate([], chan, 1, 1, "", Ast.nodeOfBreak);
+  close_in(chan);
+  Alcotest.(check(list(string)))(
+    "Parser.aggregate on a paragraph",
+    [
+      "> Lorem ipsum dolor sit amet, instructior vituperatoribus pri cu, quaeque",
+      "albucius quaerendum te vel. Zril tamquam maiestatis nam no, in utamur quaestio",
+      "scriptorem vim. Tota graeco vel ne, ne vel primis conclusionemque. Mea dicam",
+      "tritani reformidans te, at sed erant molestie incorrupte. Laudem iisque ea vis,",
+      "solet veniam dissentiet mea et.",
+    ],
+    content,
+  );
+};
+
 let tests = [
   ("Parser.getPeriodSubStr a single digit list", `Slow, getSingleDigitPeriod),
   ("Parser.getPeriodSubStr a double digit list", `Slow, getDoubleDigitPeriod),
   ("Parser.getPeriodSubStr a triple digit list", `Slow, getTripleDigitPeriod),
+  ("Parser.getPeriodSubStr of nothing", `Slow, getPeriodOfEmpty),
+  (
+    "Parser.getPeriodSubStr of string without period",
+    `Slow,
+    getPeriodOfPeriodlessString,
+  ),
   ("Parser.parseHeading a markdown header 1", `Slow, parseHeading1),
   ("Parser.parseHeading a markdown header 2", `Slow, parseHeading2),
   ("Parser.parseHeading a markdown header 3", `Slow, parseHeading3),
@@ -132,4 +169,5 @@ let tests = [
   ("Parser.parseList an ordered list", `Slow, parseLink),
   ("Parser.parseLinkFootnote an link", `Slow, parseFootnote),
   ("Parser.parseLinkFootnote a footnote", `Slow, parseOrderedList),
+  ("Parser.aggregate on a paragraph", `Slow, parserAggregate),
 ];
