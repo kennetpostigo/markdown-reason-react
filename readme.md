@@ -19,10 +19,10 @@ directory of just markdown files and nothing else and pass a `--static` that wil
 * [ ] Interpolate ReasonReact components in markdown
 
 ## Future work after Alpha
-* [ ] Readme Linting with fantastic error messages
-* [ ] implement --static
-* [ ] markdown -> plain html (only requires a different codegen, this is simple)
-* [ ] markdown -> react.js (only requires a different codegen, this is simple)
+* [ ] Markdown Linting with fantastic error messages
+* [ ] Implement --static
+* [ ] Markdown -> plain html (only requires a different codegen, this is simple)
+* [ ] Markdown -> react.js (only requires a different codegen, this is simple)
 
 ```shell
                                  MARKDOWN-TO-REASON-REACT
