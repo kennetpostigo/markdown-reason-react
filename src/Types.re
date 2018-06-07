@@ -2,7 +2,7 @@ type listTypes =
   | Ordered
   | Unordered;
 
-type primitives =
+type primitive =
   | Heading(int)
   | Blockquote
   | Paragraph
@@ -27,11 +27,12 @@ type primitives =
   | Definition
   | FootnoteDefinition;
 
-type location = (int, int);
 type ast = list(element)
 and element = {
-  element: primitives,
+  element: primitive,
+  startLoc: int,
+  endLoc: int,
+  nestRule: list(primitive),
   children: ast,
   textContent: option(string),
-  location,
 };

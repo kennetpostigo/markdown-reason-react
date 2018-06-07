@@ -45,9 +45,9 @@ let primitiveToString = t =>
   };
 
 /* TODO: convert to option */
-let stringIndex = (prmtv, (sl, el), str, ch, fail) =>
+let strIdx = (prmtv, (sl, el), str, ch, fail) =>
   switch (String.index(str, ch)) {
-  | i => i
+  | i => Some(i)
   | exception Not_found =>
     fail ?
       raise(
@@ -62,19 +62,18 @@ let stringIndex = (prmtv, (sl, el), str, ch, fail) =>
           ++ "is malformed.",
         ),
       ) :
-      (-1)
+      None
   | exception (Invalid_argument(c)) =>
     fail ?
       failwith(
         "MarkdownReasonReact.Parser.safeStringindex: This is a bug, please report it.",
       ) :
-      (-1)
+      None
   };
 
-/* TODO: convert to option */
-let stringIndexFrom = (prmtv, (sl, el), str, index, ch, fail) =>
+let strIdxFrom = (prmtv, (sl, el), str, index, ch, fail) =>
   switch (String.index_from(str, index, ch)) {
-  | i => i
+  | i => Some(i)
   | exception Not_found =>
     fail ?
       raise(
@@ -89,25 +88,25 @@ let stringIndexFrom = (prmtv, (sl, el), str, index, ch, fail) =>
           ++ "is malformed.",
         ),
       ) :
-      (-1)
+      None
   | exception (Invalid_argument(c)) =>
     fail ?
       failwith(
         "MarkdownReasonReact.Parser.safeStringindexFrom: This is a bug, please report it.",
       ) :
-      (-1)
+      None
   };
 
 /* TODO: convert to option */
-let stringSub = (prmtv, (sl, el), str, ss, se, fail) =>
+let strSub = (prmtv, (sl, el), str, ss, se, fail) =>
   switch (String.sub(str, ss, se)) {
-  | i => i
+  | i => Some(i)
   | exception (Invalid_argument(c)) =>
     fail ?
       failwith(
         "MarkdownReasonReact.Parser.safeStringSub: This is a bug, please report it.",
       ) :
-      "$$$NotFound$$$"
+      None
   };
 
 let addSpace = depth => {
@@ -126,8 +125,7 @@ let hasTextContent = tc =>
   | None => "None"
   };
 
-let nodeToString = (element: element) => {
-  let (locS, locE) = element.location;
+let nodeToString = (element: element) =>
   addSpace(0)
   ++ "{\n"
   ++ addSpace(2)
@@ -143,14 +141,13 @@ let nodeToString = (element: element) => {
   ++ ",\n"
   ++ addSpace(2)
   ++ "location: ("
-  ++ string_of_int(locS)
+  ++ string_of_int(element.startLoc)
   ++ ", "
-  ++ string_of_int(locE)
+  ++ string_of_int(element.endLoc)
   ++ ")"
   ++ "\n"
   ++ addSpace(0)
   ++ "}";
-};
 
 let codegenToString = (file, page) =>
   Lexing.from_string(page)
