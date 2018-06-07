@@ -7,7 +7,7 @@ pages. This library is a work in progress, but is actively being worked on.
 Optionally if you're just making a completely static site you can have a
 directory of just markdown files and nothing else and pass a `--static` that will generate a SPA.
 
-## Remaining Functionality to Implement
+## Remaining Alpha Functionality to Implement
 
 * [x] Parse top level elements
 * [ ] Parse inline/nested elements
@@ -17,6 +17,11 @@ directory of just markdown files and nothing else and pass a `--static` that wil
 * [x] Refmt generated code
 * [ ] Highlight Code Blocks
 * [ ] Interpolate ReasonReact components in markdown
+
+## Future work after Alpha
+* [] implement --static
+* [] markdown -> plain html (only requires a different codegen, this is simple)
+* [] markdown -> react.js (only requires a different codegen, this is simple)
 
 ```shell
                                  MARKDOWN-TO-REASON-REACT
