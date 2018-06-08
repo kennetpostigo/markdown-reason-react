@@ -63,6 +63,7 @@ let rec renderElement = (node: element) =>
       "<img src=\"" ++ en ++ "\" alt=\"" ++ hd ++ "\" />\n";
 
     | Footnote => "<sup>" ++ getTextContent(node.textContent) ++ "</sup>\n"
+    | Null
     | Break
     | Emphasis
     | Strong

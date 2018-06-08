@@ -42,6 +42,7 @@ let primitiveToString = t =>
   | FootnoteReference => "FootnoteReference"
   | Definition => "Definition"
   | FootnoteDefinition => "FootnoteDefinition"
+  | Null => "Null"
   };
 
 /* TODO: convert to option */
@@ -169,3 +170,56 @@ let codegenToString = (file, page) =>
        Format.str_formatter,
      )
   |> Format.flush_str_formatter;
+
+let cleanText = node =>
+  switch (node.textContent) {
+  | Some(s) =>
+    print_string(
+      "\n===============================\n"
+      ++ s
+      ++ "\n===============================\n",
+    );
+    let trimmedStr = String.trim(s);
+
+    let next =
+      switch (node.element) {
+      | Heading(1) =>
+        String.sub(trimmedStr, 2, String.length(trimmedStr) - 2)
+      | Heading(2) =>
+        String.sub(trimmedStr, 3, String.length(trimmedStr) - 3)
+      | Heading(3) =>
+        String.sub(trimmedStr, 4, String.length(trimmedStr) - 4)
+      | Heading(4) =>
+        String.sub(trimmedStr, 5, String.length(trimmedStr) - 5)
+      | Heading(5) =>
+        String.sub(trimmedStr, 6, String.length(trimmedStr) - 6)
+      | Heading(_) =>
+        String.sub(trimmedStr, 7, String.length(trimmedStr) - 7)
+      | Blockquote =>
+        String.sub(trimmedStr, 2, String.length(trimmedStr) - 2)
+      | Paragraph => trimmedStr
+      | Break => trimmedStr
+      | Emphasis => String.sub(trimmedStr, 1, String.length(trimmedStr) - 2)
+      | Strong => String.sub(trimmedStr, 2, String.length(trimmedStr) - 3)
+      | Delete => String.sub(trimmedStr, 2, String.length(trimmedStr) - 3)
+      | List(listTypes) => trimmedStr
+      | ListItem => String.sub(trimmedStr, 2, String.length(trimmedStr) - 3)
+      | Code => String.sub(trimmedStr, 3, String.length(trimmedStr) - 3)
+      | InlineCode => trimmedStr
+      | Table => trimmedStr
+      | TableRow => trimmedStr
+      | TableCell => trimmedStr
+      | ThematicBreak => trimmedStr
+      | Link => trimmedStr
+      | Image => trimmedStr
+      | Footnote => trimmedStr
+      | LinkReference => trimmedStr
+      | ImageReference => trimmedStr
+      | FootnoteReference => trimmedStr
+      | Definition => trimmedStr
+      | FootnoteDefinition => trimmedStr
+      | Null => ""
+      };
+    {...node, textContent: Some(next)};
+  | None => node
+  };

@@ -1,13 +1,25 @@
 open Types;
 
-let nodeOfHeading = (line, level, locS, locE) => {
-  element: Heading(level),
-  startLoc: locS,
-  endLoc: locE,
-  nestRule: [],
-  children: [],
-  textContent: None,
-};
+let nodeOfHeading = (line, level, locS, locE) =>
+  if (line != "#") {
+    Utils.cleanText({
+      element: Heading(level),
+      startLoc: locS,
+      endLoc: locE,
+      nestRule: [],
+      children: [],
+      textContent: Some(line),
+    });
+  } else {
+    Utils.cleanText({
+      element: Heading(level),
+      startLoc: locS,
+      endLoc: locE,
+      nestRule: [],
+      children: [],
+      textContent: None,
+    });
+  };
 
 let nodeOfLink = (line, locS, locE) => {
   let prtv = "Link";
@@ -47,14 +59,14 @@ let nodeOfLink = (line, locS, locE) => {
     | None => ""
     };
 
-  {
+  Utils.cleanText({
     element: Link,
     startLoc: locS,
     endLoc: locE,
     nestRule: [],
     children: [],
     textContent: Some(title ++ " " ++ link),
-  };
+  });
 };
 
 let nodeOfImage = (line, locS, locE) => {
@@ -143,21 +155,36 @@ let nodeOfBreak = (locS, locE) => {
   textContent: None,
 };
 
+let nodeOfNull = (locS, locE) => {
+  element: Null,
+  startLoc: locS,
+  endLoc: locE,
+  nestRule: [],
+  children: [],
+  textContent: None,
+};
+
 let rec nodeOfParagraph = (lines, str, locS, locE) =>
   switch (lines) {
-  | [] => {
+  | [] =>
+    Utils.cleanText({
       element: Paragraph,
       startLoc: locS,
       endLoc: locE,
       nestRule: [],
       children: [],
       textContent: Some(str),
-    }
+    })
   | [hd] =>
     let nextEnd = str == "" && locS == locE ? locE : locE + 1;
     let nextStr = str ++ (str == "" ? "" : "\n") ++ hd;
     nodeOfParagraph([], nextStr, locS, nextEnd);
   | [hd, ...tl] =>
+    print_string(
+      "\n===============================\n"
+      ++ hd
+      ++ "\n===============================\n",
+    );
     let nextEnd = str == "" && locS == locE ? locE : locE + 1;
     let nextStr = str ++ (str == "" ? "" : "\n") ++ hd;
     nodeOfParagraph(tl, nextStr, locS, nextEnd);
@@ -165,14 +192,15 @@ let rec nodeOfParagraph = (lines, str, locS, locE) =>
 
 let rec nodeOfBlockquote = (lines, str, locS, locE) =>
   switch (lines) {
-  | [] => {
+  | [] =>
+    Utils.cleanText({
       element: Blockquote,
       startLoc: locS,
       endLoc: locE,
       nestRule: [],
       children: [],
       textContent: Some(str),
-    }
+    })
   | [hd] =>
     let nextEnd = str == "" && locS == locE ? locE : locE + 1;
     let nextStr = str ++ (str == "" ? "" : "\n") ++ hd;
@@ -185,14 +213,15 @@ let rec nodeOfBlockquote = (lines, str, locS, locE) =>
 
 let rec nodeOfCode = (lines, str, locS, locE) =>
   switch (lines) {
-  | [] => {
+  | [] =>
+    Utils.cleanText({
       element: Code,
       startLoc: locS,
-      endLoc: locE,
+      endLoc: locE + 1,
       nestRule: [],
       children: [],
       textContent: Some(str),
-    }
+    })
   | [hd] =>
     let nextEnd = str == "" && locS == locE ? locE : locE + 1;
     let nextStr = str ++ (str == "" ? "" : "\n") ++ hd;
