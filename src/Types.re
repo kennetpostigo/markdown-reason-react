@@ -25,7 +25,8 @@ type primitive =
   | ImageReference
   | FootnoteReference
   | Definition
-  | FootnoteDefinition;
+  | FootnoteDefinition
+  | Null;
 
 type ast = list(element)
 and element = {
