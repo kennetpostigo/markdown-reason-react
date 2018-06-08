@@ -125,6 +125,14 @@ let hasTextContent = tc =>
   | None => "None"
   };
 
+let nestRuleToStr = nestRule =>
+  List.fold_left(
+    (acc, curr) => acc ++ primitiveToString(curr) ++ ",",
+    "[",
+    nestRule,
+  )
+  ++ "]";
+
 let nodeToString = (element: element) =>
   addSpace(0)
   ++ "{\n"
@@ -133,19 +141,24 @@ let nodeToString = (element: element) =>
   ++ primitiveToString(element.element)
   ++ ",\n"
   ++ addSpace(2)
+  ++ "startLoc: "
+  ++ string_of_int(element.startLoc)
+  ++ ",\n"
+  ++ addSpace(2)
+  ++ "endLoc: "
+  ++ string_of_int(element.endLoc)
+  ++ ",\n"
+  ++ addSpace(2)
+  ++ "nestRule: "
+  ++ nestRuleToStr(element.nestRule)
+  ++ ",\n"
+  ++ addSpace(2)
   ++ "children: []"
   ++ ",\n"
   ++ addSpace(0 + 2)
   ++ "textContent: "
   ++ hasTextContent(element.textContent)
   ++ ",\n"
-  ++ addSpace(2)
-  ++ "location: ("
-  ++ string_of_int(element.startLoc)
-  ++ ", "
-  ++ string_of_int(element.endLoc)
-  ++ ")"
-  ++ "\n"
   ++ addSpace(0)
   ++ "}";
 

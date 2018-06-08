@@ -248,10 +248,11 @@ let rec astToString = (str, ast: ast, depth) =>
         let el =
           renderNode(
             hd.element,
-            hd.children,
-            hd.textContent,
             hd.startLoc,
             hd.endLoc,
+            hd.nestRule,
+            hd.children,
+            hd.textContent,
             2,
           )
           ++ "\n";
@@ -262,10 +263,11 @@ let rec astToString = (str, ast: ast, depth) =>
           "\n"
           ++ renderNode(
                hd.element,
-               hd.children,
-               hd.textContent,
                hd.startLoc,
                hd.endLoc,
+               hd.nestRule,
+               hd.children,
+               hd.textContent,
                depth,
              )
           ++ "\n";
@@ -277,10 +279,11 @@ let rec astToString = (str, ast: ast, depth) =>
         let el =
           renderNode(
             hd.element,
-            hd.children,
-            hd.textContent,
             hd.startLoc,
             hd.endLoc,
+            hd.nestRule,
+            hd.children,
+            hd.textContent,
             depth,
           )
           ++ ",\n";
@@ -291,10 +294,11 @@ let rec astToString = (str, ast: ast, depth) =>
           "\n"
           ++ renderNode(
                hd.element,
-               hd.children,
-               hd.textContent,
                hd.startLoc,
                hd.endLoc,
+               hd.nestRule,
+               hd.children,
+               hd.textContent,
                depth,
              )
           ++ ",\n";
@@ -303,12 +307,24 @@ let rec astToString = (str, ast: ast, depth) =>
       }
     };
   }
-and renderNode = (element, children, textContent, sloc, eloc, depth) =>
+and renderNode = (element, sloc, eloc, nestRule, children, textContent, depth) =>
   Utils.addSpace(depth)
   ++ "{\n"
   ++ Utils.addSpace(depth + 2)
   ++ "element: "
   ++ Utils.primitiveToString(element)
+  ++ ",\n"
+  ++ Utils.addSpace(depth + 2)
+  ++ "startLoc: "
+  ++ string_of_int(sloc)
+  ++ ",\n"
+  ++ Utils.addSpace(depth + 2)
+  ++ "endLoc: "
+  ++ string_of_int(eloc)
+  ++ ",\n"
+  ++ Utils.addSpace(depth + 2)
+  ++ "nestRule: "
+  ++ Utils.nestRuleToStr(nestRule)
   ++ ",\n"
   ++ Utils.addSpace(depth + 2)
   ++ "children: "
@@ -318,12 +334,5 @@ and renderNode = (element, children, textContent, sloc, eloc, depth) =>
   ++ "textContent: "
   ++ Utils.hasTextContent(textContent)
   ++ ",\n"
-  ++ Utils.addSpace(depth + 2)
-  ++ "location: ("
-  ++ string_of_int(sloc)
-  ++ ", "
-  ++ string_of_int(eloc)
-  ++ ")"
-  ++ "\n"
   ++ Utils.addSpace(depth)
   ++ "}";

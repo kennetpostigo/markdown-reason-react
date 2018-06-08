@@ -6,9 +6,11 @@ let astOfLink = () =>
     "Ast.nodeOfLink",
     {|{
   element: Link,
+  startLoc: 1,
+  endLoc: 1,
+  nestRule: [],
   children: [],
   textContent: link http://lol.to title,
-  location: (1, 1)
 }|},
     Utils.nodeToString(Ast.nodeOfLink("[link](http://lol.to title)", 1, 1)),
   );
@@ -18,9 +20,11 @@ let astOfImage = () =>
     "Ast.nodeOfImage",
     {|{
   element: Image,
+  startLoc: 1,
+  endLoc: 1,
+  nestRule: [],
   children: [],
   textContent: link http://lol.to lol,
-  location: (1, 1)
 }|},
     Utils.nodeToString(Ast.nodeOfImage("![link](http://lol.to lol)", 1, 1)),
   );
@@ -30,9 +34,11 @@ let astOfFootnote = () =>
     "Ast.nodeOfFootnote",
     {|{
   element: Footnote,
+  startLoc: 1,
+  endLoc: 1,
+  nestRule: [],
   children: [],
   textContent: some footnote,
-  location: (1, 1)
 }|},
     Utils.nodeToString(Ast.nodeOfFootnote("[^some footnote]", 1, 1)),
   );
