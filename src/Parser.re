@@ -93,7 +93,6 @@ let iterDirectoryFiles = fn => "TODO";
 
 let rec aggregate = (ls, chan, locS, locE, id, idHandler) => {
   let line = input_line(chan);
-  print_string(line ++ "\n");
   let nextLocE = locE + 1;
 
   if (line == id) {
@@ -104,63 +103,70 @@ let rec aggregate = (ls, chan, locS, locE, id, idHandler) => {
   };
 };
 
-let rec parseFileToAST = (filename, ast, loc) => {
+let parseFileToAST = filename => {
   let chan = open_in(filename); /* open file */
-  let line = input_line(chan); /* read line from file */
 
-  try (
-    switch (parsePrimitives(line)) {
-    | Paragraph =>
-      let (content, lastNode) =
-        aggregate([line], chan, loc + 1, loc + 1, "", Ast.nodeOfBreak);
-      let node = Ast.nodeOfParagraph(content, "", loc, loc);
-      parseFileToAST(filename, [lastNode, node, ...ast], lastNode.endLoc);
-    | Blockquote =>
-      let (content, lastNode) =
-        aggregate([line], chan, loc + 1, loc + 1, "", Ast.nodeOfBreak);
-      let node = Ast.nodeOfBlockquote(content, "", loc, loc);
-      parseFileToAST(filename, [lastNode, node, ...ast], lastNode.endLoc);
-    | Heading(int) =>
-      let node = Ast.nodeOfHeading(line, int, loc, loc);
-      parseFileToAST(filename, [node, ...ast], node.endLoc);
-    | Code =>
-      let (content, _) =
-        aggregate([line], chan, loc + 1, loc + 1, "```", (int, int) => ());
-      let node = Ast.nodeOfCode(content, "", loc, loc);
-      parseFileToAST(filename, [node, ...ast], node.endLoc);
-    | List(lt) =>
-      let node = Ast.nodeOfLists(line, [], lt, loc, loc);
-      parseFileToAST(filename, [node, ...ast], node.endLoc);
-    | Link =>
-      let node = Ast.nodeOfLink(line, loc, loc);
-      parseFileToAST(filename, [node, ...ast], node.endLoc);
-    | Image =>
-      let node = Ast.nodeOfImage(line, loc, loc);
-      parseFileToAST(filename, [node, ...ast], node.endLoc);
-    | Footnote =>
-      let node = Ast.nodeOfFootnote(line, loc, loc);
-      parseFileToAST(filename, [node, ...ast], node.endLoc);
-    | Emphasis
-    | Strong
-    | Delete
-    | ThematicBreak
-    | ListItem
-    | InlineCode
-    | Table
-    | TableRow
-    | TableCell
-    | LinkReference
-    | ImageReference
-    | FootnoteReference
-    | Definition
-    | FootnoteDefinition
-    | Break =>
-      let node = Ast.nodeOfBreak(loc, loc);
-      parseFileToAST(filename, [node, ...ast], node.endLoc);
-    }
-  ) {
-  | End_of_file =>
-    close_in(chan);
-    List.rev(ast);
-  };
+  let rec parse = (chan, ast: ast, loc) =>
+    try (
+      {
+        let locE = ast == [] && loc == 1 ? loc : loc + 1;
+        let line = input_line(chan); /* read line from file */
+
+        switch (parsePrimitives(line)) {
+        | Paragraph =>
+          let (content, lastNode) =
+            aggregate([line], chan, locE, locE, "", Ast.nodeOfBreak);
+          let node = Ast.nodeOfParagraph(content, "", locE, locE);
+          parse(chan, [lastNode, node, ...ast], lastNode.endLoc);
+        | Blockquote =>
+          let (content, lastNode) =
+            aggregate([line], chan, locE, locE, "", Ast.nodeOfBreak);
+          let node = Ast.nodeOfBlockquote(content, "", locE, locE);
+          parse(chan, [lastNode, node, ...ast], lastNode.endLoc);
+        | Heading(int) =>
+          let node = Ast.nodeOfHeading(line, int, locE, locE);
+          parse(chan, [node, ...ast], node.endLoc);
+        | Code =>
+          let (content, _) =
+            aggregate([line], chan, locE, locE, "```", (int, int) => ());
+          let node = Ast.nodeOfCode(content, "", locE, locE);
+          parse(chan, [node, ...ast], node.endLoc);
+        | List(lt) =>
+          let node = Ast.nodeOfLists(line, [], lt, locE, locE);
+          parse(chan, [node, ...ast], node.endLoc);
+        | Link =>
+          let node = Ast.nodeOfLink(line, locE, locE);
+          parse(chan, [node, ...ast], node.endLoc);
+        | Image =>
+          let node = Ast.nodeOfImage(line, locE, locE);
+          parse(chan, [node, ...ast], node.endLoc);
+        | Footnote =>
+          let node = Ast.nodeOfFootnote(line, locE, locE);
+          parse(chan, [node, ...ast], node.endLoc);
+        | Emphasis
+        | Strong
+        | Delete
+        | ThematicBreak
+        | ListItem
+        | InlineCode
+        | Table
+        | TableRow
+        | TableCell
+        | LinkReference
+        | ImageReference
+        | FootnoteReference
+        | Definition
+        | FootnoteDefinition
+        | Break =>
+          let node = Ast.nodeOfBreak(locE, locE);
+          parse(chan, [node, ...ast], node.endLoc);
+        };
+      }
+    ) {
+    | End_of_file =>
+      close_in(chan);
+      List.rev(ast);
+    };
+
+  parse(chan, [], 1);
 };
