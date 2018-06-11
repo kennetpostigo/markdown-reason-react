@@ -43,69 +43,98 @@ let astOfFootnote = () =>
     Utils.nodeToString(Ast.nodeOfFootnote("[^some footnote]", 1, 1)),
   );
 
-/* let astOfBlockquote = () => {
-     let chan = open_in("../../../tests/stubs/astBlockquote.md");
-     Alcotest.(check(string))(
-       "Ast.nodeOfBlockquote",
-       {|{
-     element: Blockquote,
-     children: [],
-     textContent: > this is a memorable quote about something.
-   This is the secondLine.,
-     location: (1, 2)
-   }|},
-       Utils.nodeToString(Ast.nodeOfBlockquote(chan, "", 1, 1)),
-     );
-     close_in(chan);
-   };
+let astOfParagraph = () =>
+  Alcotest.(check(string))(
+    "Ast.nodeOfParagraph",
+    {|{
+  element: Paragraph,
+  startLoc: 1,
+  endLoc: 5,
+  nestRule: [],
+  children: [],
+  textContent: Lorem ipsum dolor sit amet, instructior vituperatoribus pri cu, quaeque
+albucius quaerendum te vel. Zril tamquam maiestatis nam no, in utamur quaestio
+scriptorem vim. Tota graeco vel ne, ne vel primis conclusionemque. Mea dicam
+tritani reformidans te, at sed erant molestie incorrupte. Laudem iisque ea vis,
+solet veniam dissentiet mea et.,
+}|},
+    Utils.nodeToString(
+      Ast.nodeOfParagraph(
+        [
+          "Lorem ipsum dolor sit amet, instructior vituperatoribus pri cu, quaeque",
+          "albucius quaerendum te vel. Zril tamquam maiestatis nam no, in utamur quaestio",
+          "scriptorem vim. Tota graeco vel ne, ne vel primis conclusionemque. Mea dicam",
+          "tritani reformidans te, at sed erant molestie incorrupte. Laudem iisque ea vis,",
+          "solet veniam dissentiet mea et.",
+        ],
+        "",
+        1,
+        1,
+      ),
+    ),
+  );
 
-   let astOfParagraph = () => {
-     let chan = open_in("../../../tests/stubs/astParagraph.md");
-     Alcotest.(check(string))(
-       "Ast.nodeOfParagraph",
-       {|{
-     element: Paragraph,
-     children: [],
-     textContent: Lorem ipsum dolor sit amet, instructior vituperatoribus pri cu, quaeque
-   albucius quaerendum te vel. Zril tamquam maiestatis nam no, in utamur quaestio
-   scriptorem vim. Tota graeco vel ne, ne vel primis conclusionemque. Mea dicam
-   tritani reformidans te, at sed erant molestie incorrupte. Laudem iisque ea vis,
-   solet veniam dissentiet mea et.,
-     location: (1, 5)
-   }|},
-       Utils.nodeToString(Ast.nodeOfParagraph(chan, "", 1, 1)),
-     );
-     close_in(chan);
-   };
+let astOfBlockquote = () =>
+  Alcotest.(check(string))(
+    "Ast.nodeOfBlockquote",
+    {|{
+  element: Blockquote,
+  startLoc: 1,
+  endLoc: 2,
+  nestRule: [],
+  children: [],
+  textContent: this is a memorable quote about something.
+This is the secondLine.,
+}|},
+    Utils.nodeToString(
+      Ast.nodeOfBlockquote(
+        [
+          "> this is a memorable quote about something.",
+          "This is the secondLine.",
+        ],
+        "",
+        1,
+        1,
+      ),
+    ),
+  );
 
-   let astOfCode = () => {
-     let chan = open_in("../../../tests/stubs/astCode.md");
-     Alcotest.(check(string))(
-       "Ast.nodeOfCode",
-       {|{
-     element: Code,
-     children: [],
-     textContent: ```
-   open LwtNode;
+let astOfCode = () =>
+  Alcotest.(check(string))(
+    "Ast.nodeOfCode",
+    "{\n  element: Code,\n  startLoc: 1,\n  endLoc: 9,\n  nestRule: [],\n  children: [],\n  textContent: \n"
+    ++ {|open LwtNode;
 
-   Node.run({
-     let%lwt myDir = Fs.mkdir("myDir");
-     let%lwt myDir2 = Fs.mkdir("myDir2");
-     Node.resolved();
-   });
-   ```,
-     location: (1, 9)
-   }|},
-       Utils.nodeToString(Ast.nodeOfCode(chan, "", 1, 1)),
-     );
-     close_in(chan);
-   }; */
+Node.run({
+  let%lwt myDir = Fs.mkdir("myDir");
+  let%lwt myDir2 = Fs.mkdir("myDir2");
+  Node.resolved();
+});,
+}|},
+    Utils.nodeToString(
+      Ast.nodeOfCode(
+        [
+          "```",
+          "open LwtNode;",
+          "",
+          "Node.run({",
+          {|  let%lwt myDir = Fs.mkdir("myDir");|},
+          {|  let%lwt myDir2 = Fs.mkdir("myDir2");|},
+          "  Node.resolved();",
+          "});",
+        ],
+        "",
+        1,
+        1,
+      ),
+    ),
+  );
 
 let tests = [
   ("Ast.nodeOfLink", `Slow, astOfLink),
   ("Ast.nodeOfImage", `Slow, astOfImage),
   ("Ast.nodeOfFootnote", `Slow, astOfFootnote),
-  /* ("Ast.nodeOfBlockquote", `Slow, astOfBlockquote),
-     ("Ast.nodeOfParagraph", `Slow, astOfParagraph),
-     ("Ast.nodeOfCode", `Slow, astOfCode), */
+  ("Ast.nodeOfBlockquote", `Slow, astOfBlockquote),
+  ("Ast.nodeOfParagraph", `Slow, astOfParagraph),
+  ("Ast.nodeOfCode", `Slow, astOfCode),
 ];

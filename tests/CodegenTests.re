@@ -151,14 +151,14 @@ let renderElementCode = () =>
 let renderElementLink = () =>
   Alcotest.(check(string))(
     "Codegen.renderElement on Link",
-    "<a href=\"https://lol.to\" title=\"shit\">\n(ReasonReact.string({|home|}))\n</a>\n",
+    "<a href=\"https://lol.to\">\n(ReasonReact.string({|home|}))\n</a>\n",
     Codegen.renderElement({
       element: Link,
       startLoc: 1,
       endLoc: 1,
       nestRule: [],
       children: [],
-      textContent: Some("home https://lol.to shit"),
+      textContent: Some("home https://lol.to"),
     }),
   );
 
