@@ -180,11 +180,6 @@ let rec nodeOfParagraph = (lines, str, locS, locE) =>
     let nextStr = str ++ (str == "" ? "" : "\n") ++ hd;
     nodeOfParagraph([], nextStr, locS, nextEnd);
   | [hd, ...tl] =>
-    print_string(
-      "\n===============================\n"
-      ++ hd
-      ++ "\n===============================\n",
-    );
     let nextEnd = str == "" && locS == locE ? locE : locE + 1;
     let nextStr = str ++ (str == "" ? "" : "\n") ++ hd;
     nodeOfParagraph(tl, nextStr, locS, nextEnd);
@@ -239,6 +234,14 @@ let getListType = line =>
   | "+ " => Unordered
   | _ => Ordered
   };
+
+/*Cases:
+  - If text is left dangling without a space between last line then it should be part of the same list item
+
+  - Doesn't matter how many spaces are between list items
+
+  - List does not end until it encounters another element.
+  */
 
 let rec nodeOfLists = (line, list, listType, locS, locE) =>
   if (line == "") {

@@ -45,7 +45,6 @@ let primitiveToString = t =>
   | Null => "Null"
   };
 
-/* TODO: convert to option */
 let strIdx = (prmtv, (sl, el), str, ch, fail) =>
   switch (String.index(str, ch)) {
   | i => Some(i)
@@ -98,7 +97,6 @@ let strIdxFrom = (prmtv, (sl, el), str, index, ch, fail) =>
       None
   };
 
-/* TODO: convert to option */
 let strSub = (prmtv, (sl, el), str, ss, se, fail) =>
   switch (String.sub(str, ss, se)) {
   | i => Some(i)
@@ -128,7 +126,7 @@ let hasTextContent = tc =>
 
 let nestRuleToStr = nestRule =>
   List.fold_left(
-    (acc, curr) => acc ++ primitiveToString(curr) ++ ",",
+    (acc, curr) => acc ++ primitiveToString(curr) ++ ", ",
     "[",
     nestRule,
   )
@@ -174,11 +172,6 @@ let codegenToString = (file, page) =>
 let cleanText = node =>
   switch (node.textContent) {
   | Some(s) =>
-    print_string(
-      "\n===============================\n"
-      ++ s
-      ++ "\n===============================\n",
-    );
     let trimmedStr = String.trim(s);
 
     let next =
