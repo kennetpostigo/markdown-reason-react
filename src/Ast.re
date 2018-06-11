@@ -235,14 +235,6 @@ let getListType = line =>
   | _ => Ordered
   };
 
-/*Cases:
-  - If text is left dangling without a space between last line then it should be part of the same list item
-
-  - Doesn't matter how many spaces are between list items
-
-  - List does not end until it encounters another element.
-  */
-
 let rec nodeOfLists = (line, list, listType, locS, locE) =>
   if (line == "") {
     {
