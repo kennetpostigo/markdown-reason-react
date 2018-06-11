@@ -46,21 +46,19 @@ let rec renderElement = (node: element) =>
       ++ "</code>\n"
       ++ "</pre>\n"
     | Link =>
-      let [hd, md, en] =
+      let meta =
         String.split_on_char(' ', getRawTextContent(node.textContent));
-      "<a href=\""
-      ++ md
-      ++ "\""
-      ++ " title=\""
-      ++ en
-      ++ "\">"
-      ++ renderText(hd)
-      ++ "</a>\n";
+      let text = List.hd(meta);
+      let href = List.nth(meta, 1);
+      "<a href=\"" ++ href ++ "\"" ++ ">" ++ renderText(text) ++ "</a>\n";
 
     | Image =>
-      let [hd, en] =
+      let meta =
         String.split_on_char(' ', getRawTextContent(node.textContent));
-      "<img src=\"" ++ en ++ "\" alt=\"" ++ hd ++ "\" />\n";
+      let alt = List.hd(meta);
+      let src = List.nth(meta, 1);
+
+      "<img src=\"" ++ src ++ "\" alt=\"" ++ alt ++ "\" />\n";
 
     | Footnote => "<sup>" ++ getTextContent(node.textContent) ++ "</sup>\n"
     | Null
