@@ -116,7 +116,7 @@ let parseFileToAST = filename => {
   let rec parse = (chan, ast: ast, loc) =>
     try (
       {
-        let locE = ast == [] && loc == 1 ? loc : loc + 1;
+        let locE = ast == [] && loc == 1 ? loc : loc + 1; /* increment line */
         let line = input_line(chan); /* read line from file */
 
         switch (parsePrimitives(line)) {
@@ -139,6 +139,8 @@ let parseFileToAST = filename => {
           let node = Ast.nodeOfCode(content, "", locE, locE);
           parse(chan, [node, ...ast], node.endLoc);
         | List(lt) =>
+          /* let (content, lastNode) =
+             aggregate(line, chan, locE, locE, "", Ast.nodeOfBreak); */
           let node = Ast.nodeOfLists(line, [], lt, locE, locE);
           parse(chan, [node, ...ast], node.endLoc);
         | Link =>
@@ -150,6 +152,7 @@ let parseFileToAST = filename => {
         | Footnote =>
           let node = Ast.nodeOfFootnote(line, locE, locE);
           parse(chan, [node, ...ast], node.endLoc);
+        | Null => parse(chan, ast, locE + 1)
         | Emphasis
         | Strong
         | Delete
