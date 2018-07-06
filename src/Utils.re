@@ -45,6 +45,21 @@ let primitiveToString = t =>
   | Null => "Null"
   };
 
+
+  /* Taken directly from OCaml Stdlib */
+  let splitOnChar = (sep, s) => {
+    let r = ref([]);
+    let j = ref(String.length(s));
+    for (i in String.length(s) - 1 downto 0) {
+      if (String.unsafe_get(s, i) == sep) {
+        r := [String.sub(s, i + 1, j^ - i - 1), ...r^];
+        j := i;
+      };
+    };
+    [String.sub(s, 0, j^), ...r^];
+  };
+  
+
 let strIdx = (prmtv, (sl, el), str, ch, fail) =>
   switch (String.index(str, ch)) {
   | i => Some(i)

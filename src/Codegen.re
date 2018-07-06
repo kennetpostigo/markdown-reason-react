@@ -47,14 +47,14 @@ let rec renderElement = (node: element) =>
       ++ "</pre>\n"
     | Link =>
       let meta =
-        String.split_on_char(' ', getRawTextContent(node.textContent));
+        Utils.splitOnChar(' ', getRawTextContent(node.textContent));
       let text = List.hd(meta);
       let href = List.nth(meta, 1);
       "<a href=\"" ++ href ++ "\"" ++ ">" ++ renderText(text) ++ "</a>\n";
 
     | Image =>
       let meta =
-        String.split_on_char(' ', getRawTextContent(node.textContent));
+        Utils.splitOnChar(' ', getRawTextContent(node.textContent));
       let alt = List.hd(meta);
       let src = List.nth(meta, 1);
 
