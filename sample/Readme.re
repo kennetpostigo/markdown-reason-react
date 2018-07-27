@@ -4,7 +4,7 @@ let make = children => {
   render: _self =>
     <div>
       <h1> (ReasonReact.string({|Hi World!|})) </h1>
-      <a href="http://lol.to" title="lol"> (ReasonReact.string({|link|})) </a>
+      <a href="http://lol.to"> (ReasonReact.string({|link|})) </a>
       <pre>
         <code>
           (

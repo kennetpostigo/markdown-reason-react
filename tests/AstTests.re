@@ -1,5 +1,4 @@
 open MarkdownReasonReact;
-open Types;
 
 let astOfLink = () =>
   Alcotest.(check(string))(

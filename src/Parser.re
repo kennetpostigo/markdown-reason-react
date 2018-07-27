@@ -88,8 +88,8 @@ let parsePrimitives = line =>
   | _ => Paragraph
   };
 
-let getDirectoryFiles = directory => "TODO";
-let iterDirectoryFiles = fn => "TODO";
+let getDirectoryFiles = _directory => "TODO";
+let iterDirectoryFiles = _fn => "TODO";
 
 let rec aggregate = (ls, chan, locS, locE, id, idHandler: 'a) =>
   switch (input_line(chan)) {

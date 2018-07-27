@@ -1,0 +1,8 @@
+(executable
+  (name Test)
+  (libraries markdown-reason-react alcotest))
+
+(alias
+  (name runtest)
+  (deps Test.exe)
+  (action (run %{dep:Test.exe})))

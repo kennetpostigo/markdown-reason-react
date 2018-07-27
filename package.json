@@ -7,33 +7,28 @@
     "build": [
       [
         "refmterr",
-        "jbuilder",
+        "dune",
         "build"
       ]
     ],
     "install": [
-      "esy-installer"
+      "dune install --prefix=#{self.install}"
     ],
     "buildsInSource": "_build"
   },
   "dependencies": {
     "@esy-ocaml/esy-installer": "^0.0.0",
-    "@esy-ocaml/reason": "3.2.0",
+    "@esy-ocaml/reason": "^3.3.0",
     "@opam/alcotest": "0.8.3",
-    "@opam/alcotest-lwt": "0.8.0",
-    "@opam/jbuilder": "1.0+beta20",
+    "@opam/dune": "*",
     "refmterr": "^3.1.7"
   },
-  "resolutions": {
-    "@esy-ocaml/reason": "3.2.0",
-    "@opam/merlin-extend": "0.3"
-  },
   "peerDependencies": {
-    "@esy-ocaml/merlin": "3.0.5",
+    "@esy-ocaml/merlin": "^3.0.5005",
     "ocaml": "~4.6.1"
   },
   "devDependencies": {
-    "@esy-ocaml/merlin": "3.0.5",
+    "@esy-ocaml/merlin": "^3.0.5005",
     "ocaml": "~4.6.1"
   }
 }

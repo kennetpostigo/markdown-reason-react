@@ -63,7 +63,7 @@ let strIdx = (prmtv, (sl, el), str, ch, fail) =>
         ),
       ) :
       None
-  | exception (Invalid_argument(c)) =>
+  | exception (Invalid_argument(_c)) =>
     fail ?
       failwith(
         "MarkdownReasonReact.Parser.safeStringindex: This is a bug, please report it.",
@@ -89,7 +89,7 @@ let strIdxFrom = (prmtv, (sl, el), str, index, ch, fail) =>
         ),
       ) :
       None
-  | exception (Invalid_argument(c)) =>
+  | exception (Invalid_argument(_c)) =>
     fail ?
       failwith(
         "MarkdownReasonReact.Parser.safeStringindexFrom: This is a bug, please report it.",
@@ -97,10 +97,10 @@ let strIdxFrom = (prmtv, (sl, el), str, index, ch, fail) =>
       None
   };
 
-let strSub = (prmtv, (sl, el), str, ss, se, fail) =>
+let strSub = (_prmtv, (_sl, _el), str, ss, se, fail) =>
   switch (String.sub(str, ss, se)) {
   | i => Some(i)
-  | exception (Invalid_argument(c)) =>
+  | exception (Invalid_argument(_c)) =>
     fail ?
       failwith(
         "MarkdownReasonReact.Parser.safeStringSub: This is a bug, please report it.",
@@ -161,7 +161,7 @@ let nodeToString = (element: element) =>
   ++ addSpace(0)
   ++ "}";
 
-let codegenToString = (file, page) =>
+let codegenToString = (_file, page) =>
   Lexing.from_string(page)
   |> Reason_toolchain.RE.implementation_with_comments
   |> Reason_toolchain.RE.print_implementation_with_comments(
@@ -195,7 +195,7 @@ let cleanText = node =>
       | Emphasis => String.sub(trimmedStr, 1, String.length(trimmedStr) - 2)
       | Strong => String.sub(trimmedStr, 2, String.length(trimmedStr) - 3)
       | Delete => String.sub(trimmedStr, 2, String.length(trimmedStr) - 3)
-      | List(listTypes) => trimmedStr
+      | List(_listTypes) => trimmedStr
       | ListItem => String.sub(trimmedStr, 2, String.length(trimmedStr) - 3)
       | Code => String.sub(trimmedStr, 3, String.length(trimmedStr) - 3)
       | InlineCode => trimmedStr

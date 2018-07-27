@@ -23,7 +23,6 @@ let getRawTextContent = tc =>
   };
 
 let rec renderElement = (node: element) =>
-  Parser.(
     switch ((node.element: primitive)) {
     | Heading(1) => "<h1>" ++ getTextContent(node.textContent) ++ "</h1>\n"
     | Heading(2) => "<h2>" ++ getTextContent(node.textContent) ++ "</h2>\n"
@@ -77,22 +76,21 @@ let rec renderElement = (node: element) =>
     | Definition
     | FootnoteDefinition => ""
     }
-  )
+  
 and listToString = ls => {
   let listOfStrings = List.map(el => renderElement(el), ls);
   List.fold_left((acc, curr) => acc ++ "\n" ++ curr, "", listOfStrings);
 };
 
 let rec generateCodeFromAST = (ast: ast, page) =>
-  Parser.(
+  
     switch (ast) {
     | [] =>
       statelessComponent("Readme")
       ++ makeComponent("<div>\n" ++ page ++ "\n" ++ "</div>")
     | [hd] => generateCodeFromAST([], page ++ renderElement(hd))
     | [hd, ...tl] => generateCodeFromAST(tl, page ++ renderElement(hd))
-    }
-  );
+    };
 
 let pipePageToFile = (file, page) => {
   let formattedCode =

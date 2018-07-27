@@ -1,0 +1,4 @@
+(executable
+  (name Index)
+  (public_name Index)
+  (libraries markdown-reason-react))
